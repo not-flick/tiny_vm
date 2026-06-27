@@ -18,3 +18,7 @@ add_executable(TinyShell
 target_include_directories(TinyShell PRIVATE
     Src/TinyShell
 )
+
+if(MSVC)
+    target_compile_options(TinyShell PRIVATE /utf-8)
+endif()
