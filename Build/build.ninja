@@ -44,13 +44,11 @@ cmake_ninja_workdir = C$:/Users/viraj/tiny_vm/Build/
 
 build cmake_object_order_depends_target_TinyVM: phony || .
 
-build CMakeFiles/TinyVM.dir/Src/main.cpp.obj: CXX_COMPILER__TinyVM_unscanned_ C$:/Users/viraj/tiny_vm/Src/main.cpp || cmake_object_order_depends_target_TinyVM
-  DEFINES = -DPROJECT_ROOT=\"C:/Users/viraj/tiny_vm\"
-  DEP_FILE = CMakeFiles\TinyVM.dir\Src\main.cpp.obj.d
-  FLAGS = -std=c++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Include -IC:/Users/viraj/tiny_vm/Src
+build CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj: CXX_COMPILER__TinyVM_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyVM/main.cpp || cmake_object_order_depends_target_TinyVM
+  DEP_FILE = CMakeFiles\TinyVM.dir\Src\TinyVM\main.cpp.obj.d
+  FLAGS = -std=gnu++20
   OBJECT_DIR = CMakeFiles\TinyVM.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyVM.dir\Src
+  OBJECT_FILE_DIR = CMakeFiles\TinyVM.dir\Src\TinyVM
   TARGET_SUPPORT_DIR = CMakeFiles\TinyVM.dir
 
 
@@ -61,7 +59,7 @@ build CMakeFiles/TinyVM.dir/Src/main.cpp.obj: CXX_COMPILER__TinyVM_unscanned_ C$
 #############################################
 # Link the executable TinyVM.exe
 
-build TinyVM.exe: CXX_EXECUTABLE_LINKER__TinyVM_ CMakeFiles/TinyVM.dir/Src/main.cpp.obj
+build TinyVM.exe: CXX_EXECUTABLE_LINKER__TinyVM_ CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\TinyVM.dir
   POST_BUILD = cd .
@@ -70,6 +68,41 @@ build TinyVM.exe: CXX_EXECUTABLE_LINKER__TinyVM_ CMakeFiles/TinyVM.dir/Src/main.
   TARGET_IMPLIB = libTinyVM.dll.a
   TARGET_PDB = TinyVM.exe.dbg
   TARGET_SUPPORT_DIR = CMakeFiles\TinyVM.dir
+
+# =============================================================================
+# Object build statements for EXECUTABLE target TinyShell
+
+
+#############################################
+# Order-only phony target for TinyShell
+
+build cmake_object_order_depends_target_TinyShell: phony || .
+
+build CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/main.cpp || cmake_object_order_depends_target_TinyShell
+  DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\main.cpp.obj.d
+  FLAGS = -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  OBJECT_DIR = CMakeFiles\TinyShell.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target TinyShell
+
+
+#############################################
+# Link the executable TinyShell.exe
+
+build TinyShell.exe: CXX_EXECUTABLE_LINKER__TinyShell_ CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\TinyShell.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = TinyShell.exe
+  TARGET_IMPLIB = libTinyShell.dll.a
+  TARGET_PDB = TinyShell.exe.dbg
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
 
 #############################################
@@ -97,6 +130,8 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+build TinyShell: phony TinyShell.exe
+
 build TinyVM: phony TinyVM.exe
 
 # =============================================================================
@@ -107,7 +142,7 @@ build TinyVM: phony TinyVM.exe
 #############################################
 # Folder: C:/Users/viraj/tiny_vm/Build
 
-build all: phony TinyVM.exe
+build all: phony TinyVM.exe TinyShell.exe
 
 # =============================================================================
 # Built-in targets

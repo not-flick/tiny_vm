@@ -1,3 +1,4 @@
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/TinyVM.dir
+C:/Users/viraj/tiny_vm/Build/CMakeFiles/TinyShell.dir
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/edit_cache.dir
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/rebuild_cache.dir
