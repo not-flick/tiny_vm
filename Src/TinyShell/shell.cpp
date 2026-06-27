@@ -4,14 +4,18 @@
 #include "filesystem.h"
 #include "parser.h"
 
+#include <algorithm>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <cstdlib>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #ifdef _WIN32
+#include <conio.h>
+#include <io.h>
 #include <windows.h>
 #endif
 
@@ -109,6 +113,153 @@ namespace tinyvm
         }
 #endif
 
+        std::string BuildPrompt(const ShellState& state)
+        {
+            return state.username + "@" + state.hostname + ":" + FormatShellPath(state, state.cwd) + "$ ";
+        }
+
+        std::vector<std::string> CommandNames(const CommandMap& commands)
+        {
+            std::vector<std::string> names;
+            names.reserve(commands.size());
+
+            for (const auto& [name, command] : commands)
+            {
+                names.push_back(name);
+            }
+
+            std::sort(names.begin(), names.end());
+            return names;
+        }
+
+        std::string CompleteCommandName(const std::string& input, const CommandMap& commands)
+        {
+            if (input.find(' ') != std::string::npos || input.find('\t') != std::string::npos)
+            {
+                return input;
+            }
+
+            std::vector<std::string> matches;
+            for (const auto& [name, command] : commands)
+            {
+                if (name.rfind(input, 0) == 0)
+                {
+                    matches.push_back(name);
+                }
+            }
+
+            if (matches.size() == 1)
+            {
+                return matches.front();
+            }
+
+            return input;
+        }
+
+        std::vector<std::string> ExpandAlias(const ShellState& state, const std::vector<std::string>& tokens)
+        {
+            if (tokens.empty())
+            {
+                return tokens;
+            }
+
+            const auto alias = state.aliases.find(tokens.front());
+            if (alias == state.aliases.end())
+            {
+                return tokens;
+            }
+
+            std::vector<std::string> expanded = Tokenize(alias->second);
+            expanded.insert(expanded.end(), tokens.begin() + 1, tokens.end());
+            return expanded;
+        }
+
+#ifdef _WIN32
+        void RedrawInputLine(const std::string& prompt, const std::string& input)
+        {
+            std::cout << "\r\x1b[2K" << prompt << input;
+            std::cout.flush();
+        }
+
+        std::string ReadInputLine(const std::string& prompt, const ShellState& state, const CommandMap& commands)
+        {
+            if (_isatty(_fileno(stdin)) == 0)
+            {
+                std::string input;
+                std::getline(std::cin, input);
+                return input;
+            }
+
+            std::string input;
+            std::size_t historyIndex = state.history.size();
+
+            while (true)
+            {
+                const int ch = _getch();
+
+                if (ch == '\r')
+                {
+                    std::cout << '\n';
+                    return input;
+                }
+
+                if (ch == '\b')
+                {
+                    if (!input.empty())
+                    {
+                        input.pop_back();
+                        std::cout << "\b \b";
+                    }
+                    continue;
+                }
+
+                if (ch == '\t')
+                {
+                    const std::string completed = CompleteCommandName(input, commands);
+                    if (completed != input)
+                    {
+                        input = completed;
+                        RedrawInputLine(prompt, input);
+                    }
+                    continue;
+                }
+
+                if (ch == 0 || ch == 224)
+                {
+                    const int key = _getch();
+
+                    if (key == 72 && historyIndex > 0)
+                    {
+                        --historyIndex;
+                        input = state.history[historyIndex];
+                        RedrawInputLine(prompt, input);
+                    }
+                    else if (key == 80 && historyIndex < state.history.size())
+                    {
+                        ++historyIndex;
+                        input = historyIndex < state.history.size() ? state.history[historyIndex] : "";
+                        RedrawInputLine(prompt, input);
+                    }
+
+                    continue;
+                }
+
+                if (ch >= 32 && ch <= 126)
+                {
+                    input.push_back(static_cast<char>(ch));
+                    std::cout << static_cast<char>(ch);
+                }
+            }
+        }
+#else
+        std::string ReadInputLine(const std::string&, const ShellState&, const CommandMap&)
+        {
+            std::string input;
+            std::getline(std::cin, input);
+            return input;
+        }
+#endif
+
         void PrintBanner()
         {
             std::cout << R"(
@@ -201,15 +352,11 @@ namespace tinyvm
 
         while (state.running)
         {
-            std::cout << state.username
-                      << "@"
-                      << state.hostname
-                      << ":"
-                      << FormatShellPath(state, state.cwd)
-                      << "$ ";
+            const std::string prompt = BuildPrompt(state);
+            std::cout << prompt;
 
-            std::string input;
-            if (!std::getline(std::cin, input))
+            std::string input = ReadInputLine(prompt, state, commands);
+            if (!std::cin && input.empty())
             {
                 break;
             }
@@ -220,10 +367,17 @@ namespace tinyvm
                 continue;
             }
 
+            state.history.push_back(input);
+            tokens = ExpandAlias(state, tokens);
+            if (tokens.empty())
+            {
+                continue;
+            }
+
             const auto command = commands.find(tokens.front());
             if (command == commands.end())
             {
-                std::cout << "Command not found: " << tokens.front() << '\n';
+                std::cout << "tinyvm: command not found: " << tokens.front() << '\n';
                 continue;
             }
 

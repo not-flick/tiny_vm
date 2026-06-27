@@ -1,11 +1,7 @@
 #include "../commands.h"
 #include "../filesystem.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
-
-namespace fs = std::filesystem;
 
 namespace tinyvm
 {
@@ -13,22 +9,20 @@ namespace tinyvm
     {
         if (args.size() < 2)
         {
-            std::cout << "Usage: touch <file>\n";
+            std::cout << "touch: missing operand\n";
             return;
         }
 
-        fs::path path = ResolvePath(state, args[1]);
-        std::error_code error;
-        if (fs::exists(path, error) && fs::is_directory(path, error))
+        FileSystem filesystem(state);
+        if (filesystem.IsDirectory(args[1]))
         {
-            std::cout << "Cannot touch directory\n";
+            std::cout << "touch: cannot touch directory\n";
             return;
         }
 
-        std::ofstream file(path, std::ios::app);
-        if (!file)
+        if (!filesystem.CreateFile(args[1]))
         {
-            std::cout << "Could not create file\n";
+            std::cout << "touch: " << (filesystem.LastError().empty() ? "could not create file" : filesystem.LastError()) << '\n';
         }
     }
 }

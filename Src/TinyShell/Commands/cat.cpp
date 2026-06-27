@@ -1,12 +1,8 @@
 #include "../commands.h"
 #include "../filesystem.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <string>
-
-namespace fs = std::filesystem;
 
 namespace tinyvm
 {
@@ -14,29 +10,26 @@ namespace tinyvm
     {
         if (args.size() < 2)
         {
-            std::cout << "Usage: cat <file>\n";
+            std::cout << "cat: missing operand\n";
             return;
         }
 
-        fs::path path = ResolvePath(state, args[1]);
-        std::error_code error;
-        if (!fs::exists(path, error) || !fs::is_regular_file(path, error))
+        FileSystem filesystem(state);
+        if (!filesystem.IsFile(args[1]))
         {
-            std::cout << "No such file\n";
+            std::cout << "cat: file not found\n";
             return;
         }
 
-        std::ifstream file(path);
-        if (!file)
+        const std::string contents = filesystem.ReadFile(args[1]);
+        if (!filesystem.LastError().empty())
         {
-            std::cout << "Could not read file\n";
+            std::cout << "cat: " << filesystem.LastError() << '\n';
             return;
         }
 
-        std::string line;
-        while (std::getline(file, line))
-        {
-            std::cout << line << '\n';
-        }
+        std::cout << contents;
+        if (!contents.empty() && contents.back() != '\n')
+            std::cout << '\n';
     }
 }

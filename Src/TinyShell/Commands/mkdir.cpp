@@ -1,10 +1,7 @@
 #include "../commands.h"
 #include "../filesystem.h"
 
-#include <filesystem>
 #include <iostream>
-
-namespace fs = std::filesystem;
 
 namespace tinyvm
 {
@@ -12,22 +9,14 @@ namespace tinyvm
     {
         if (args.size() < 2)
         {
-            std::cout << "Usage: mkdir <dir>\n";
+            std::cout << "mkdir: missing operand\n";
             return;
         }
 
-        fs::path path = ResolvePath(state, args[1]);
-        std::error_code error;
-        if (!fs::create_directory(path, error))
+        FileSystem filesystem(state);
+        if (!filesystem.CreateDirectory(args[1]))
         {
-            if (error)
-            {
-                std::cout << "Could not create directory: " << error.message() << '\n';
-            }
-            else
-            {
-                std::cout << "Could not create directory\n";
-            }
+            std::cout << "mkdir: " << (filesystem.LastError().empty() ? "could not create directory" : filesystem.LastError()) << '\n';
         }
     }
 }

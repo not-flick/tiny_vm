@@ -35,4 +35,9 @@ namespace tinyvm
     void WhoamiCommand(ShellState& state, const std::vector<std::string>& args);
     void HostnameCommand(ShellState& state, const std::vector<std::string>& args);
     void VersionCommand(ShellState& state, const std::vector<std::string>& args);
+    void HistoryCommand(ShellState& state, const std::vector<std::string>& args);
+    void AliasCommand(ShellState& state, const std::vector<std::string>& args);
+    void UnaliasCommand(ShellState& state, const std::vector<std::string>& args);
+    void SetCommand(ShellState& state, const std::vector<std::string>& args);
+    void UnsetCommand(ShellState& state, const std::vector<std::string>& args);
 }

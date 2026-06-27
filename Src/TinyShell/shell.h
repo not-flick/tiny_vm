@@ -1,7 +1,9 @@
 #pragma once
 
 #include <filesystem>
+#include <unordered_map>
 #include <string>
+#include <vector>
 
 namespace tinyvm
 {
@@ -13,6 +15,10 @@ namespace tinyvm
         std::filesystem::path root;
         std::filesystem::path home;
         std::filesystem::path cwd;
+
+        std::vector<std::string> history;
+        std::unordered_map<std::string, std::string> aliases;
+        std::unordered_map<std::string, std::string> environment;
 
         bool running;
     };

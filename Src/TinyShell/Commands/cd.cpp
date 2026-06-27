@@ -1,25 +1,21 @@
 #include "../commands.h"
 #include "../filesystem.h"
 
-#include <filesystem>
 #include <iostream>
-
-namespace fs = std::filesystem;
 
 namespace tinyvm
 {
     void CdCommand(ShellState& state, const std::vector<std::string>& args)
     {
         const std::string target = args.size() > 1 ? args[1] : "~";
-        fs::path path = ResolvePath(state, target);
+        FileSystem filesystem(state);
 
-        std::error_code error;
-        if (!fs::exists(path, error) || !fs::is_directory(path, error))
+        if (!filesystem.Exists(target) || !filesystem.IsDirectory(target))
         {
-            std::cout << "No such directory\n";
+            std::cout << "cd: no such directory\n";
             return;
         }
 
-        state.cwd = path.lexically_normal();
+        state.cwd = filesystem.Resolve(target);
     }
 }

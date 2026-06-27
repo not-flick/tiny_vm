@@ -32,6 +32,11 @@ add_executable(TinyShell
     Src/TinyShell/Commands/whoami.cpp
     Src/TinyShell/Commands/hostname.cpp
     Src/TinyShell/Commands/version.cpp
+    Src/TinyShell/Commands/history.cpp
+    Src/TinyShell/Commands/alias.cpp
+    Src/TinyShell/Commands/unalias.cpp
+    Src/TinyShell/Commands/set.cpp
+    Src/TinyShell/Commands/unset.cpp
     Src/TinyShell/TinyShell.rc
 )
 

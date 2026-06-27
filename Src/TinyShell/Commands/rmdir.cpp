@@ -1,10 +1,7 @@
 #include "../commands.h"
 #include "../filesystem.h"
 
-#include <filesystem>
 #include <iostream>
-
-namespace fs = std::filesystem;
 
 namespace tinyvm
 {
@@ -12,26 +9,20 @@ namespace tinyvm
     {
         if (args.size() < 2)
         {
-            std::cout << "Usage: rmdir <dir>\n";
+            std::cout << "rmdir: missing operand\n";
             return;
         }
 
-        fs::path path = ResolvePath(state, args[1]);
-        std::error_code error;
-        if (!fs::exists(path, error) || !fs::is_directory(path, error))
+        FileSystem filesystem(state);
+        if (!filesystem.IsDirectory(args[1]))
         {
-            std::cout << "No such directory\n";
+            std::cout << "rmdir: no such directory\n";
             return;
         }
 
-        if (!fs::remove(path, error))
+        if (!filesystem.RemoveDirectory(args[1]))
         {
-            std::cout << "Could not remove directory";
-            if (error)
-            {
-                std::cout << ": " << error.message();
-            }
-            std::cout << '\n';
+            std::cout << "rmdir: " << (filesystem.LastError().empty() ? "could not remove directory" : filesystem.LastError()) << '\n';
         }
     }
 }
