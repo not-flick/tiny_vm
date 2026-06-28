@@ -6,11 +6,8 @@
 #define TINYVM_MAIN_H
 
 
-
 class main {
-
 };
-
 
 
 #endif //TINYVM_MAIN_H

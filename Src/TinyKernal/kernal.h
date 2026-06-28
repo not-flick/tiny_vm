@@ -4,6 +4,8 @@
 #include "memory.h"
 #include "process.h"
 
+#include <windows.h>
+
 #include <iostream>
 #include <string>
 
@@ -55,11 +57,31 @@ public:
     void Print(const std::string& text)
     {
         std::cout << text;
+        std::cout.flush();
     }
 
     void Clear()
     {
-        std::cout << "\x1B[2J\x1B[H";
+        const HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+        if (output == INVALID_HANDLE_VALUE)
+        {
+            return;
+        }
+
+        CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo{};
+        if (!GetConsoleScreenBufferInfo(output, &screenBufferInfo))
+        {
+            return;
+        }
+
+        const COORD home{0, 0};
+        DWORD written = 0;
+        const DWORD totalCells = static_cast<DWORD>(screenBufferInfo.dwSize.X * screenBufferInfo.dwSize.Y);
+
+        FillConsoleOutputCharacterW(output, L' ', totalCells, home, &written);
+        FillConsoleOutputAttribute(output, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE, totalCells, home, &written);
+        SetConsoleCursorPosition(output, home);
+        std::cout.flush();
     }
 };
 
@@ -71,6 +93,7 @@ public:
     FileSystem filesystem;
     ProcessManager process;
     MemoryManager memory;
+    void* ramBase{nullptr};
     KernelLogger logger;
 
     void Boot();

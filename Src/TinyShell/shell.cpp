@@ -27,7 +27,31 @@ namespace tinyvm
 
         std::string BuildPrompt(const ShellState& state)
         {
-            return state.username + "@" + state.hostname + ":" + FormatShellPath(state, state.cwd) + "$ ";
+            // ANSI color codes: bright green, bright cyan, bright yellow, reset
+            constexpr const char* kGreen = "\x1b[1;32m";
+            constexpr const char* kCyan = "\x1b[1;36m";
+            constexpr const char* kYellow = "\x1b[1;33m";
+            constexpr const char* kReset = "\x1b[0m";
+
+            std::string path = FormatShellPath(state, state.cwd);
+
+            std::string prompt;
+            prompt.reserve(64 + state.username.size() + state.hostname.size() + path.size());
+
+            prompt += kGreen;
+            prompt += state.username;
+            prompt += kReset;
+            prompt += "@";
+            prompt += kCyan;
+            prompt += state.hostname;
+            prompt += kReset;
+            prompt += ":";
+            prompt += kYellow;
+            prompt += path;
+            prompt += kReset;
+            prompt += "$ ";
+
+            return prompt;
         }
 
         std::vector<std::string> CommandNames(const CommandMap& commands)
@@ -126,7 +150,7 @@ namespace tinyvm
                     if (!input.empty())
                     {
                         input.pop_back();
-                        std::cout << "\b \b";
+                        RedrawInputLine(prompt, input);
                     }
                     continue;
                 }
@@ -170,7 +194,7 @@ namespace tinyvm
                 if (ch >= 32 && ch <= 126)
                 {
                     input.push_back(static_cast<char>(ch));
-                    std::cout << static_cast<char>(ch);
+                    RedrawInputLine(prompt, input);
                 }
             }
             return input;

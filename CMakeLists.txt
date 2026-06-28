@@ -20,6 +20,12 @@ add_library(TVM_64
         Src/TVM_64/cpu.cpp
 )
 
+add_executable(TinyEdit
+    Src/TinyEdit/main.cpp
+        Src/TinyEdit/main.cpp
+        Src/TinyEdit/main.h
+)
+
 target_include_directories(TinyKernal PUBLIC
     Src/TinyKernal
 )

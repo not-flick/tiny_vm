@@ -1,0 +1,28 @@
+# TinyVM Syscall Table
+
+| ID | Name                | Description                                        | Arguments                | Returns              |
+| -- | ------------------- | -------------------------------------------------- | ------------------------ | -------------------- |
+| 0  | `PRINT`             | Print text to the console.                         | `text`                   | Success              |
+| 1  | `CLEAR`             | Clear the terminal screen.                         | None                     | Success              |
+| 2  | `CONSOLE_INIT`      | Initialize the console (UTF-8, ANSI, title, icon). | `title` *(optional)*     | Success              |
+| 3  | `CONSOLE_IS_ATTY`   | Check whether stdin is a terminal.                 | None                     | `"true"` / `"false"` |
+| 4  | `CONSOLE_READ_CHAR` | Read a single character without Enter.             | None                     | Character code       |
+| 5  | `CONSOLE_READ_LINE` | Read a line from the console.                      | None                     | Input string         |
+| 6  | `CREATE_FILE`       | Create a new file.                                 | `path`                   | Success              |
+| 7  | `DELETE_FILE`       | Delete a file.                                     | `path`                   | Success              |
+| 8  | `CREATE_DIRECTORY`  | Create a directory.                                | `path`                   | Success              |
+| 9  | `DELETE_DIRECTORY`  | Delete a directory.                                | `path`                   | Success              |
+| 10 | `FILE_EXISTS`       | Check if a filesystem object exists.               | `path`                   | `"true"` / `"false"` |
+| 11 | `IS_DIRECTORY`      | Check whether a path is a directory.               | `path`                   | `"true"` / `"false"` |
+| 12 | `IS_FILE`           | Check whether a path is a file.                    | `path`                   | `"true"` / `"false"` |
+| 13 | `READ_FILE`         | Read an entire file.                               | `path`                   | File contents        |
+| 14 | `WRITE_FILE`        | Write text to a file.                              | `path`, `content`        | Success              |
+| 15 | `LIST_DIRECTORY`    | List files and folders in a directory.             | `path`                   | Directory entries    |
+| 16 | `COPY_FILE`         | Copy a file.                                       | `source`, `destination`  | Success              |
+| 17 | `MOVE_FILE`         | Move or rename a file.                             | `source`, `destination`  | Success              |
+| 18 | `GET_CWD`           | Get the current working directory.                 | None                     | Directory path       |
+| 19 | `SET_CWD`           | Change the current working directory.              | `path`                   | Success              |
+| 20 | `GET_USERNAME`      | Get the current TinyVM username.                   | None                     | Username             |
+| 21 | `GET_HOSTNAME`      | Get the TinyVM hostname.                           | None                     | Hostname             |
+| 22 | `RUN_PROCESS`       | Launch a process or executable.                    | `path`                   | Success              |
+| 23 | `EXIT`              | Terminate the current process.                     | `exit_code` *(optional)* | Never returns        |

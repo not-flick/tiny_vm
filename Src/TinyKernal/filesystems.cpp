@@ -180,7 +180,9 @@ bool FileSystem::CreateDirectory(const std::string& path)
 bool FileSystem::DeleteDirectory(const std::string& path)
 {
     std::string physical = ResolveVirtualPath(path);
-    return ::RemoveDirectoryA(physical.c_str());
+    std::error_code ec;
+    const auto removed = fs::remove_all(physical, ec);
+    return !ec && removed > 0;
 }
 
 bool FileSystem::Exists(const std::string& path)

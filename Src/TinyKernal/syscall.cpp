@@ -71,6 +71,16 @@ SyscallResult SyscallDispatcher::Handle(
         {
             SetConsoleOutputCP(CP_UTF8);
             SetConsoleCP(CP_UTF8);
+
+            HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            DWORD mode = 0;
+            if (GetConsoleMode(hOut, &mode))
+            {
+                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                SetConsoleMode(hOut, mode);
+            }
+            
             if (!args.empty())
             {
                 SetConsoleTitleA(args[0].c_str());
