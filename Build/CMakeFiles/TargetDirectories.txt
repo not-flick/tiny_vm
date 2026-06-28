@@ -1,4 +1,6 @@
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/TinyKernal.dir
+C:/Users/viraj/tiny_vm/Build/CMakeFiles/TVM_64.dir
+C:/Users/viraj/tiny_vm/Build/CMakeFiles/TinyEdit.dir
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/TinyVM.dir
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/TinyShell.dir
 C:/Users/viraj/tiny_vm/Build/CMakeFiles/edit_cache.dir

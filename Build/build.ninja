@@ -113,6 +113,78 @@ build libTinyKernal.a: CXX_STATIC_LIBRARY_LINKER__TinyKernal_Debug CMakeFiles/Ti
   TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
 
 # =============================================================================
+# Object build statements for STATIC_LIBRARY target TVM_64
+
+
+#############################################
+# Order-only phony target for TVM_64
+
+build cmake_object_order_depends_target_TVM_64: phony || .
+
+build CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj: CXX_COMPILER__TVM_64_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TVM_64/cpu.cpp || cmake_object_order_depends_target_TVM_64
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TVM_64.dir\Src\TVM_64\cpu.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TVM_64.dir
+  OBJECT_FILE_DIR = CMakeFiles\TVM_64.dir\Src\TVM_64
+  TARGET_SUPPORT_DIR = CMakeFiles\TVM_64.dir
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target TVM_64
+
+
+#############################################
+# Link the static library libTVM_64.a
+
+build libTVM_64.a: CXX_STATIC_LIBRARY_LINKER__TVM_64_Debug CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj
+  CONFIG = Debug
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = CMakeFiles\TVM_64.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = libTVM_64.a
+  TARGET_PDB = TVM_64.a.dbg
+  TARGET_SUPPORT_DIR = CMakeFiles\TVM_64.dir
+
+# =============================================================================
+# Object build statements for EXECUTABLE target TinyEdit
+
+
+#############################################
+# Order-only phony target for TinyEdit
+
+build cmake_object_order_depends_target_TinyEdit: phony || .
+
+build CMakeFiles/TinyEdit.dir/Src/TinyEdit/main.cpp.obj: CXX_COMPILER__TinyEdit_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyEdit/main.cpp || cmake_object_order_depends_target_TinyEdit
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TinyEdit.dir\Src\TinyEdit\main.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyEdit.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyEdit.dir\Src\TinyEdit
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyEdit.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target TinyEdit
+
+
+#############################################
+# Link the executable TinyEdit.exe
+
+build TinyEdit.exe: CXX_EXECUTABLE_LINKER__TinyEdit_Debug CMakeFiles/TinyEdit.dir/Src/TinyEdit/main.cpp.obj
+  CONFIG = Debug
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\TinyEdit.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = TinyEdit.exe
+  TARGET_IMPLIB = libTinyEdit.dll.a
+  TARGET_PDB = TinyEdit.exe.dbg
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyEdit.dir
+
+# =============================================================================
 # Object build statements for EXECUTABLE target TinyVM
 
 
@@ -438,6 +510,10 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+build TVM_64: phony libTVM_64.a
+
+build TinyEdit: phony TinyEdit.exe
+
 build TinyKernal: phony libTinyKernal.a
 
 build TinyShell: phony TinyShell.exe
@@ -452,7 +528,7 @@ build TinyVM: phony TinyVM.exe
 #############################################
 # Folder: C:/Users/viraj/tiny_vm/Build
 
-build all: phony libTinyKernal.a TinyVM.exe TinyShell.exe
+build all: phony libTinyKernal.a libTVM_64.a TinyEdit.exe TinyVM.exe TinyShell.exe
 
 # =============================================================================
 # Built-in targets
