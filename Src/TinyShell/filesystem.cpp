@@ -1,112 +1,23 @@
 #include "filesystem.h"
-
+#include "syscall.h"
 #include <algorithm>
-#include <fstream>
 #include <sstream>
-
-namespace fs = std::filesystem;
+#include <vector>
 
 namespace tinyvm
 {
-    namespace
+    std::string FormatShellPath(const ShellState& state, const std::string& path)
     {
-        std::string ToForwardSlashes(std::string text)
-        {
-            std::replace(text.begin(), text.end(), '\\', '/');
-            return text;
-        }
-
-        bool StartsWithPath(const fs::path& path, const fs::path& prefix)
-        {
-            auto pathIt = path.begin();
-            auto prefixIt = prefix.begin();
-
-            for (; prefixIt != prefix.end(); ++prefixIt, ++pathIt)
-            {
-                if (pathIt == path.end() || *pathIt != *prefixIt)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
-
-    fs::path ResolvePath(const ShellState& state, const std::string& input)
-    {
-        if (input.empty())
-        {
-            return state.cwd.lexically_normal();
-        }
-
-        std::string value = ToForwardSlashes(input);
-        fs::path resolved;
-
-        if (value == "~")
-        {
-            resolved = state.home;
-        }
-        else if (value.rfind("~/", 0) == 0)
-        {
-            resolved = state.home / value.substr(2);
-        }
-        else if (value.front() == '/')
-        {
-            resolved = state.root / value.substr(1);
-        }
-        else
-        {
-            resolved = state.cwd / value;
-        }
-
-        resolved = resolved.lexically_normal();
-
-        if (!IsInsideRoot(state, resolved))
-        {
-            return state.root;
-        }
-
-        return resolved;
-    }
-
-    std::string FormatShellPath(const ShellState& state, const fs::path& path)
-    {
-        fs::path normalized = path.lexically_normal();
-        fs::path home = state.home.lexically_normal();
-        fs::path root = state.root.lexically_normal();
-
-        if (normalized == home)
+        std::string home = "/c/users/" + state.username;
+        if (path == home)
         {
             return "~";
         }
-
-        if (StartsWithPath(normalized, home))
+        if (path.rfind(home + "/", 0) == 0)
         {
-            fs::path relative = normalized.lexically_relative(home);
-            return "~/" + ToForwardSlashes(relative.generic_string());
+            return "~" + path.substr(home.length());
         }
-
-        if (normalized == root)
-        {
-            return "/";
-        }
-
-        fs::path relative = normalized.lexically_relative(root);
-        std::string display = ToForwardSlashes(relative.generic_string());
-        if (display.empty() || display == ".")
-        {
-            return "/";
-        }
-
-        return "/" + display;
-    }
-
-    bool IsInsideRoot(const ShellState& state, const fs::path& path)
-    {
-        fs::path normalized = path.lexically_normal();
-        fs::path root = state.root.lexically_normal();
-        return normalized == root || StartsWithPath(normalized, root);
+        return path;
     }
 
     FileSystem::FileSystem(const ShellState& state)
@@ -116,166 +27,156 @@ namespace tinyvm
 
     bool FileSystem::Exists(const std::string& path) const
     {
-        std::error_code error;
-        const bool exists = fs::exists(Resolve(path), error);
-        SetError(error ? error.message() : "");
-        return exists && !error;
+        auto res = Syscall(SyscallID::FILE_EXISTS, {path});
+        SetError(res.error);
+        return res.success && !res.data.empty() && res.data[0] == "true";
     }
 
     bool FileSystem::IsDirectory(const std::string& path) const
     {
-        std::error_code error;
-        const bool directory = fs::is_directory(Resolve(path), error);
-        SetError(error ? error.message() : "");
-        return directory && !error;
+        auto res = Syscall(SyscallID::IS_DIRECTORY, {path});
+        SetError(res.error);
+        return res.success && !res.data.empty() && res.data[0] == "true";
     }
 
     bool FileSystem::IsFile(const std::string& path) const
     {
-        std::error_code error;
-        const bool file = fs::is_regular_file(Resolve(path), error);
-        SetError(error ? error.message() : "");
-        return file && !error;
+        auto res = Syscall(SyscallID::IS_FILE, {path});
+        SetError(res.error);
+        return res.success && !res.data.empty() && res.data[0] == "true";
     }
 
-    bool FileSystem::CreateDirectory(const std::string& path) const
+    bool FileSystem::MkDir(const std::string& path) const
     {
-        std::error_code error;
-        const bool created = fs::create_directory(Resolve(path), error);
-        SetError(error ? error.message() : "");
-        return created && !error;
+        auto res = Syscall(SyscallID::CREATE_DIRECTORY, {path});
+        SetError(res.error);
+        return res.success;
     }
 
-    bool FileSystem::RemoveDirectory(const std::string& path) const
+    bool FileSystem::RmDir(const std::string& path) const
     {
-        std::error_code error;
-        const fs::path resolved = Resolve(path);
-        if (!fs::is_directory(resolved, error))
-        {
-            SetError(error ? error.message() : "not a directory");
-            return false;
-        }
-
-        const bool removed = fs::remove(resolved, error);
-        SetError(error ? error.message() : "");
-        return removed && !error;
+        auto res = Syscall(SyscallID::DELETE_DIRECTORY, {path});
+        SetError(res.error);
+        return res.success;
     }
 
-    bool FileSystem::CreateFile(const std::string& path) const
+    bool FileSystem::Touch(const std::string& path) const
     {
-        const fs::path resolved = Resolve(path);
-        std::error_code error;
-        if (fs::is_directory(resolved, error))
-        {
-            SetError("is a directory");
-            return false;
-        }
-
-        std::ofstream file(resolved, std::ios::app);
-        SetError(file ? "" : "could not create file");
-        return static_cast<bool>(file);
+        auto res = Syscall(SyscallID::CREATE_FILE, {path});
+        SetError(res.error);
+        return res.success;
     }
 
-    bool FileSystem::RemoveFile(const std::string& path) const
+    bool FileSystem::RmFile(const std::string& path) const
     {
-        std::error_code error;
-        const fs::path resolved = Resolve(path);
-        if (!fs::is_regular_file(resolved, error))
-        {
-            SetError(error ? error.message() : "not a file");
-            return false;
-        }
-
-        const bool removed = fs::remove(resolved, error);
-        SetError(error ? error.message() : "");
-        return removed && !error;
+        auto res = Syscall(SyscallID::DELETE_FILE, {path});
+        SetError(res.error);
+        return res.success;
     }
 
     bool FileSystem::Copy(const std::string& source, const std::string& destination) const
     {
-        std::error_code error;
-        fs::copy(Resolve(source), Resolve(destination), fs::copy_options::recursive, error);
-        SetError(error ? error.message() : "");
-        return !error;
+        auto res = Syscall(SyscallID::COPY_FILE, {source, destination});
+        SetError(res.error);
+        return res.success;
     }
 
     bool FileSystem::Move(const std::string& source, const std::string& destination) const
     {
-        return Rename(source, destination);
+        auto res = Syscall(SyscallID::MOVE_FILE, {source, destination});
+        SetError(res.error);
+        return res.success;
     }
 
     bool FileSystem::Rename(const std::string& source, const std::string& destination) const
     {
-        std::error_code error;
-        fs::rename(Resolve(source), Resolve(destination), error);
-        SetError(error ? error.message() : "");
-        return !error;
+        auto res = Syscall(SyscallID::MOVE_FILE, {source, destination});
+        SetError(res.error);
+        return res.success;
     }
 
     std::string FileSystem::ReadFile(const std::string& path) const
     {
-        std::ifstream file(Resolve(path));
-        if (!file)
-        {
-            SetError("could not read file");
-            return {};
-        }
-
-        std::ostringstream contents;
-        contents << file.rdbuf();
-        SetError("");
-        return contents.str();
+        auto res = Syscall(SyscallID::READ_FILE, {path});
+        SetError(res.error);
+        return res.success && !res.data.empty() ? res.data[0] : "";
     }
 
     bool FileSystem::WriteFile(const std::string& path, const std::string& content) const
     {
-        std::ofstream file(Resolve(path));
-        if (!file)
-        {
-            SetError("could not write file");
-            return false;
-        }
-
-        file << content;
-        SetError(file ? "" : "could not write file");
-        return static_cast<bool>(file);
+        auto res = Syscall(SyscallID::WRITE_FILE, {path, content});
+        SetError(res.error);
+        return res.success;
     }
 
     std::vector<std::string> FileSystem::List(const std::string& path) const
     {
-        std::vector<std::string> entries;
-        const fs::path resolved = path.empty() ? state.cwd : Resolve(path);
-
-        std::error_code error;
-        for (const auto& entry : fs::directory_iterator(resolved, error))
-        {
-            if (error)
-            {
-                SetError(error.message());
-                return {};
-            }
-
-            std::string name = entry.path().filename().generic_string();
-            if (entry.is_directory(error))
-            {
-                name += "/";
-            }
-            entries.push_back(name);
-        }
-
-        std::sort(entries.begin(), entries.end());
-        SetError(error ? error.message() : "");
-        return entries;
+        auto res = Syscall(SyscallID::LIST_DIRECTORY, {path});
+        SetError(res.error);
+        return res.success ? res.data : std::vector<std::string>{};
     }
 
     std::string FileSystem::Absolute(const std::string& path) const
     {
-        return Resolve(path).generic_string();
+        return Resolve(path);
     }
 
-    fs::path FileSystem::Resolve(const std::string& path) const
+    std::string FileSystem::Resolve(const std::string& path) const
     {
-        return ResolvePath(state, path);
+        if (path.empty())
+        {
+            return state.cwd;
+        }
+
+        std::string value = path;
+        std::replace(value.begin(), value.end(), '\\', '/');
+
+        std::string resolved;
+        std::string home = "/c/users/" + state.username;
+
+        if (value == "~")
+        {
+            resolved = home;
+        }
+        else if (value.rfind("~/", 0) == 0)
+        {
+            resolved = home + "/" + value.substr(2);
+        }
+        else if (value.front() == '/')
+        {
+            resolved = value;
+        }
+        else
+        {
+            if (state.cwd == "/")
+                resolved = "/" + value;
+            else
+                resolved = state.cwd + "/" + value;
+        }
+
+        std::vector<std::string> parts;
+        std::stringstream ss(resolved);
+        std::string item;
+        while (std::getline(ss, item, '/'))
+        {
+            if (item.empty() || item == ".") continue;
+            if (item == "..")
+            {
+                if (!parts.empty()) parts.pop_back();
+            }
+            else
+            {
+                parts.push_back(item);
+            }
+        }
+
+        std::string normal_path = "";
+        for (const auto& p : parts)
+        {
+            normal_path += "/" + p;
+        }
+        if (normal_path.empty()) normal_path = "/";
+        return normal_path;
     }
 
     std::string FileSystem::LastError() const

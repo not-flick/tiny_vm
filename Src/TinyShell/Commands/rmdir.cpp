@@ -20,7 +20,7 @@ namespace tinyvm
             return;
         }
 
-        if (!filesystem.RemoveDirectory(args[1]))
+        if (!filesystem.RmDir(args[1]))
         {
             std::cout << "rmdir: " << (filesystem.LastError().empty() ? "could not remove directory" : filesystem.LastError()) << '\n';
         }

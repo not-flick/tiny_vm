@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: TinyVM
-# Configurations: 
+# Configurations: Debug
 # =============================================================================
 
 #############################################
@@ -20,6 +20,11 @@
 
 ninja_required_version = 1.5
 
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
 # =============================================================================
 # Include auxiliary files.
 
@@ -36,17 +41,91 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = C$:/Users/viraj/tiny_vm/Build/
 # =============================================================================
+# Object build statements for STATIC_LIBRARY target TinyKernal
+
+
+#############################################
+# Order-only phony target for TinyKernal
+
+build cmake_object_order_depends_target_TinyKernal: phony || .
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyKernal/kernal.cpp || cmake_object_order_depends_target_TinyKernal
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\kernal.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernal
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/process.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyKernal/process.cpp || cmake_object_order_depends_target_TinyKernal
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\process.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernal
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyKernal/memory.cpp || cmake_object_order_depends_target_TinyKernal
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\memory.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernal
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyKernal/filesystems.cpp || cmake_object_order_depends_target_TinyKernal
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\filesystems.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernal
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyKernal/syscall.cpp || cmake_object_order_depends_target_TinyKernal
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\syscall.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernal
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target TinyKernal
+
+
+#############################################
+# Link the static library libTinyKernal.a
+
+build libTinyKernal.a: CXX_STATIC_LIBRARY_LINKER__TinyKernal_Debug CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/process.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj
+  CONFIG = Debug
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = libTinyKernal.a
+  TARGET_PDB = TinyKernal.a.dbg
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+# =============================================================================
 # Object build statements for EXECUTABLE target TinyVM
 
 
 #############################################
 # Order-only phony target for TinyVM
 
-build cmake_object_order_depends_target_TinyVM: phony || .
+build cmake_object_order_depends_target_TinyVM: phony || cmake_object_order_depends_target_TinyKernal
 
-build CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj: CXX_COMPILER__TinyVM_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyVM/main.cpp || cmake_object_order_depends_target_TinyVM
+build CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj: CXX_COMPILER__TinyVM_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyVM/main.cpp || cmake_object_order_depends_target_TinyVM
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyVM.dir\Src\TinyVM\main.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyVM.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyVM.dir\Src\TinyVM
   TARGET_SUPPORT_DIR = CMakeFiles\TinyVM.dir
@@ -59,8 +138,10 @@ build CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj: CXX_COMPILER__TinyVM_unscan
 #############################################
 # Link the executable TinyVM.exe
 
-build TinyVM.exe: CXX_EXECUTABLE_LINKER__TinyVM_ CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build TinyVM.exe: CXX_EXECUTABLE_LINKER__TinyVM_Debug CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj | libTinyKernal.a || libTinyKernal.a
+  CONFIG = Debug
+  FLAGS = -g
+  LINK_LIBRARIES = libTinyKernal.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\TinyVM.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -76,211 +157,237 @@ build TinyVM.exe: CXX_EXECUTABLE_LINKER__TinyVM_ CMakeFiles/TinyVM.dir/Src/TinyV
 #############################################
 # Order-only phony target for TinyShell
 
-build cmake_object_order_depends_target_TinyShell: phony || .
+build cmake_object_order_depends_target_TinyShell: phony || cmake_object_order_depends_target_TinyKernal
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/main.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/main.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\main.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/shell.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/shell.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/shell.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/shell.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\shell.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/parser.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/parser.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/parser.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/parser.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\parser.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/filesystem.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/filesystem.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/filesystem.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/filesystem.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\filesystem.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/commands.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/commands.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/commands.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/commands.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\commands.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/help.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/help.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/help.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/help.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\help.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/clear.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/clear.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/clear.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/clear.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\clear.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/exit.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/exit.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/exit.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/exit.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\exit.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/pwd.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/pwd.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/pwd.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/pwd.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\pwd.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cd.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/cd.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cd.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/cd.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\cd.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/ls.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/ls.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/ls.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/ls.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\ls.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/mkdir.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/mkdir.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/mkdir.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/mkdir.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\mkdir.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/touch.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/touch.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/touch.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/touch.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\touch.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rm.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/rm.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rm.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/rm.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\rm.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rmdir.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/rmdir.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rmdir.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/rmdir.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\rmdir.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cat.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/cat.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cat.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/cat.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\cat.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/echo.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/echo.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/echo.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/echo.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\echo.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/whoami.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/whoami.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/whoami.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/whoami.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\whoami.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/hostname.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/hostname.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/hostname.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/hostname.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\hostname.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/version.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/version.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/version.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/version.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\version.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/history.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/history.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/history.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/history.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\history.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/alias.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/alias.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/alias.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/alias.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\alias.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unalias.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/unalias.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unalias.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/unalias.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\unalias.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/set.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/set.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/set.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/set.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\set.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unset.cpp.obj: CXX_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/unset.cpp || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unset.cpp.obj: CXX_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/Commands/unset.cpp || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands\unset.cpp.obj.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyShell -IC:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell\Commands
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
-build CMakeFiles/TinyShell.dir/Src/TinyShell/TinyShell.rc.obj: RC_COMPILER__TinyShell_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyShell/TinyShell.rc || cmake_object_order_depends_target_TinyShell
+build CMakeFiles/TinyShell.dir/Src/TinyShell/TinyShell.rc.obj: RC_COMPILER__TinyShell_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TinyShell/TinyShell.rc || cmake_object_order_depends_target_TinyShell
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\TinyShell.dir\Src\TinyShell\TinyShell.rc.obj.d
-  INCLUDES = -I C:/Users/viraj/tiny_vm/Src/TinyShell
+  INCLUDES = -I C:/Users/viraj/tiny_vm/Src/TinyShell -I C:/Users/viraj/tiny_vm/Src/TinyKernal
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   OBJECT_FILE_DIR = CMakeFiles\TinyShell.dir\Src\TinyShell
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
@@ -293,8 +400,10 @@ build CMakeFiles/TinyShell.dir/Src/TinyShell/TinyShell.rc.obj: RC_COMPILER__Tiny
 #############################################
 # Link the executable TinyShell.exe
 
-build TinyShell.exe: CXX_EXECUTABLE_LINKER__TinyShell_ CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/shell.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/parser.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/filesystem.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/commands.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/help.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/clear.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/exit.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/pwd.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cd.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/ls.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/mkdir.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/touch.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rm.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rmdir.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cat.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/echo.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/whoami.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/hostname.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/version.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/history.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/alias.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unalias.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/set.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unset.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/TinyShell.rc.obj
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build TinyShell.exe: CXX_EXECUTABLE_LINKER__TinyShell_Debug CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/shell.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/parser.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/filesystem.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/commands.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/help.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/clear.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/exit.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/pwd.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cd.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/ls.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/mkdir.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/touch.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rm.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/rmdir.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/cat.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/echo.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/whoami.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/hostname.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/version.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/history.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/alias.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unalias.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/set.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/Commands/unset.cpp.obj CMakeFiles/TinyShell.dir/Src/TinyShell/TinyShell.rc.obj | libTinyKernal.a || libTinyKernal.a
+  CONFIG = Debug
+  FLAGS = -g
+  LINK_LIBRARIES = libTinyKernal.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\TinyShell.dir
   POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\viraj\tiny_vm\Build && C:\msys64\ucrt64\bin\cmake.exe -E copy_if_different C:/Users/viraj/tiny_vm/Src/TinyShell/logo/TinyShell.ico C:/Users/viraj/tiny_vm/Build/TinyShell.ico"
   PRE_LINK = cd .
@@ -302,75 +411,6 @@ build TinyShell.exe: CXX_EXECUTABLE_LINKER__TinyShell_ CMakeFiles/TinyShell.dir/
   TARGET_IMPLIB = libTinyShell.dll.a
   TARGET_PDB = TinyShell.exe.dbg
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
-
-# =============================================================================
-# Object build statements for EXECUTABLE target TinyKernal
-
-
-#############################################
-# Order-only phony target for TinyKernal
-
-build cmake_object_order_depends_target_TinyKernal: phony || .
-
-build CMakeFiles/TinyKernal.dir/Src/TinyKernal/main.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/main.cpp || cmake_object_order_depends_target_TinyKernal
-  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\main.cpp.obj.d
-  FLAGS = -std=gnu++20
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
-
-build CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/syscall.cpp || cmake_object_order_depends_target_TinyKernal
-  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\syscall.cpp.obj.d
-  FLAGS = -std=gnu++20
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
-
-build CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/kernal.cpp || cmake_object_order_depends_target_TinyKernal
-  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\kernal.cpp.obj.d
-  FLAGS = -std=gnu++20
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
-
-build CMakeFiles/TinyKernal.dir/Src/TinyKernal/process.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/process.cpp || cmake_object_order_depends_target_TinyKernal
-  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\process.cpp.obj.d
-  FLAGS = -std=gnu++20
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
-
-build CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/memory.cpp || cmake_object_order_depends_target_TinyKernal
-  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\memory.cpp.obj.d
-  FLAGS = -std=gnu++20
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
-
-build CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/filesystems.cpp || cmake_object_order_depends_target_TinyKernal
-  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\filesystems.cpp.obj.d
-  FLAGS = -std=gnu++20
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target TinyKernal
-
-
-#############################################
-# Link the executable TinyKernal.exe
-
-build TinyKernal.exe: CXX_EXECUTABLE_LINKER__TinyKernal_ CMakeFiles/TinyKernal.dir/Src/TinyKernal/main.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/process.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\TinyKernal.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_FILE = TinyKernal.exe
-  TARGET_IMPLIB = libTinyKernal.dll.a
-  TARGET_PDB = TinyKernal.exe.dbg
-  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
 
 
 #############################################
@@ -398,7 +438,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build TinyKernal: phony TinyKernal.exe
+build TinyKernal: phony libTinyKernal.a
 
 build TinyShell: phony TinyShell.exe
 
@@ -412,7 +452,7 @@ build TinyVM: phony TinyVM.exe
 #############################################
 # Folder: C:/Users/viraj/tiny_vm/Build
 
-build all: phony TinyVM.exe TinyShell.exe TinyKernal.exe
+build all: phony libTinyKernal.a TinyVM.exe TinyShell.exe
 
 # =============================================================================
 # Built-in targets

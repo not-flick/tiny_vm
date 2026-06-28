@@ -1,11 +1,10 @@
 #include "../commands.h"
-
-#include <iostream>
+#include "syscall.h"
 
 namespace tinyvm
 {
     void ClearCommand(ShellState&, const std::vector<std::string>&)
     {
-        std::cout << "\x1B[2J\x1B[H";
+        Syscall(SyscallID::CLEAR, {});
     }
 }

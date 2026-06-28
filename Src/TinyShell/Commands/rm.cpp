@@ -20,7 +20,7 @@ namespace tinyvm
             return;
         }
 
-        if (!filesystem.RemoveFile(args[1]))
+        if (!filesystem.RmFile(args[1]))
         {
             std::cout << "rm: " << (filesystem.LastError().empty() ? "could not remove file" : filesystem.LastError()) << '\n';
         }

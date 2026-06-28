@@ -1,5 +1,6 @@
 #include "../commands.h"
 #include "../filesystem.h"
+#include "syscall.h"
 
 #include <iostream>
 
@@ -10,12 +11,23 @@ namespace tinyvm
         const std::string target = args.size() > 1 ? args[1] : "~";
         FileSystem filesystem(state);
 
-        if (!filesystem.Exists(target) || !filesystem.IsDirectory(target))
+        std::string resolved = filesystem.Resolve(target);
+
+        auto res = Syscall(SyscallID::SET_CWD, {resolved});
+        if (!res.success)
         {
-            std::cout << "cd: no such directory\n";
+            std::cout << "cd: " << (res.error.empty() ? "no such directory" : res.error) << '\n';
             return;
         }
 
-        state.cwd = filesystem.Resolve(target);
+        auto get_res = Syscall(SyscallID::GET_CWD, {});
+        if (get_res.success && !get_res.data.empty())
+        {
+            state.cwd = get_res.data[0];
+        }
+        else
+        {
+            state.cwd = resolved;
+        }
     }
 }

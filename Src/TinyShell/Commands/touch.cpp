@@ -20,7 +20,7 @@ namespace tinyvm
             return;
         }
 
-        if (!filesystem.CreateFile(args[1]))
+        if (!filesystem.Touch(args[1]))
         {
             std::cout << "touch: " << (filesystem.LastError().empty() ? "could not create file" : filesystem.LastError()) << '\n';
         }

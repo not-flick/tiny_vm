@@ -2,7 +2,6 @@
 
 #include "shell.h"
 
-#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -17,11 +16,11 @@ namespace tinyvm
         bool IsDirectory(const std::string& path) const;
         bool IsFile(const std::string& path) const;
 
-        bool CreateDirectory(const std::string& path) const;
-        bool RemoveDirectory(const std::string& path) const;
+        bool MkDir(const std::string& path) const;
+        bool RmDir(const std::string& path) const;
 
-        bool CreateFile(const std::string& path) const;
-        bool RemoveFile(const std::string& path) const;
+        bool Touch(const std::string& path) const;
+        bool RmFile(const std::string& path) const;
 
         bool Copy(const std::string& source, const std::string& destination) const;
         bool Move(const std::string& source, const std::string& destination) const;
@@ -33,7 +32,7 @@ namespace tinyvm
         std::vector<std::string> List(const std::string& path) const;
 
         std::string Absolute(const std::string& path) const;
-        std::filesystem::path Resolve(const std::string& path) const;
+        std::string Resolve(const std::string& path) const;
         std::string LastError() const;
 
     private:
@@ -43,7 +42,5 @@ namespace tinyvm
         void SetError(const std::string& message) const;
     };
 
-    std::filesystem::path ResolvePath(const ShellState& state, const std::string& input);
-    std::string FormatShellPath(const ShellState& state, const std::filesystem::path& path);
-    bool IsInsideRoot(const ShellState& state, const std::filesystem::path& path);
+    std::string FormatShellPath(const ShellState& state, const std::string& path);
 }

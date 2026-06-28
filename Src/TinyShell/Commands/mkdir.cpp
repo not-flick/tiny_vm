@@ -14,7 +14,7 @@ namespace tinyvm
         }
 
         FileSystem filesystem(state);
-        if (!filesystem.CreateDirectory(args[1]))
+        if (!filesystem.MkDir(args[1]))
         {
             std::cout << "mkdir: " << (filesystem.LastError().empty() ? "could not create directory" : filesystem.LastError()) << '\n';
         }

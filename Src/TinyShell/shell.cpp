@@ -1,117 +1,29 @@
 #include "shell.h"
-
 #include "commands.h"
 #include "filesystem.h"
 #include "parser.h"
+#include "syscall.h"
 
 #include <algorithm>
 #include <cstdlib>
-#include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#ifdef _WIN32
-#include <conio.h>
-#include <io.h>
-#include <windows.h>
-#endif
-
-namespace fs = std::filesystem;
-
 namespace tinyvm
 {
     namespace
     {
-        constexpr const char* ConfigPath = "C:/tiny_vm/system/config.txt";
-
         void ConfigureTerminal()
         {
-#ifdef _WIN32
-            SetConsoleOutputCP(CP_UTF8);
-            SetConsoleCP(CP_UTF8);
-            SetConsoleTitleA("TinyShell");
-#endif
-        }
-
-#ifdef _WIN32
-        fs::path GetExecutableDirectory()
-        {
-            std::wstring path(MAX_PATH, L'\0');
-            const DWORD length = GetModuleFileNameW(nullptr, path.data(), static_cast<DWORD>(path.size()));
-            if (length == 0)
-            {
-                return {};
-            }
-
-            path.resize(length);
-            return fs::path(path).parent_path();
-        }
-
-        void SetWindowIcon(const fs::path& iconPath)
-        {
-            const std::wstring icon = iconPath.wstring();
-            HICON bigIcon = static_cast<HICON>(LoadImageW(
-                nullptr,
-                icon.c_str(),
-                IMAGE_ICON,
-                32,
-                32,
-                LR_LOADFROMFILE));
-
-            HICON smallIcon = static_cast<HICON>(LoadImageW(
-                nullptr,
-                icon.c_str(),
-                IMAGE_ICON,
-                16,
-                16,
-                LR_LOADFROMFILE));
-
-            HWND window = GetConsoleWindow();
-            if (window != nullptr)
-            {
-                if (bigIcon != nullptr)
-                {
-                    SendMessageW(window, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(bigIcon));
-                }
-
-                if (smallIcon != nullptr)
-                {
-                    SendMessageW(window, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(smallIcon));
-                }
-            }
-        }
-
-        void SetWindowsTerminalTabIcon(const fs::path& iconPath)
-        {
-            if (std::getenv("WT_SESSION") == nullptr)
-            {
-                return;
-            }
-
-            std::cout << "\x1b]9;9;" << iconPath.generic_string() << "\x07";
-            std::cout.flush();
+            Syscall(SyscallID::CONSOLE_INIT, {"TinyShell"});
         }
 
         void ConfigureIcons()
         {
-            const fs::path iconPath = GetExecutableDirectory() / "TinyShell.ico";
-            std::error_code error;
-            if (!fs::exists(iconPath, error))
-            {
-                return;
-            }
-
-            SetWindowIcon(iconPath);
-            SetWindowsTerminalTabIcon(iconPath);
+            // Fully handled by kernel CONSOLE_INIT system call.
         }
-#else
-        void ConfigureIcons()
-        {
-        }
-#endif
 
         std::string BuildPrompt(const ShellState& state)
         {
@@ -174,7 +86,6 @@ namespace tinyvm
             return expanded;
         }
 
-#ifdef _WIN32
         void RedrawInputLine(const std::string& prompt, const std::string& input)
         {
             std::cout << "\r\x1b[2K" << prompt << input;
@@ -183,11 +94,13 @@ namespace tinyvm
 
         std::string ReadInputLine(const std::string& prompt, const ShellState& state, const CommandMap& commands)
         {
-            if (_isatty(_fileno(stdin)) == 0)
+            auto atty_res = Syscall(SyscallID::CONSOLE_IS_ATTY, {});
+            bool is_atty = (atty_res.success && !atty_res.data.empty() && atty_res.data[0] == "true");
+
+            if (!is_atty)
             {
-                std::string input;
-                std::getline(std::cin, input);
-                return input;
+                auto read_res = Syscall(SyscallID::CONSOLE_READ_LINE, {});
+                return (read_res.success && !read_res.data.empty()) ? read_res.data[0] : "";
             }
 
             std::string input;
@@ -195,7 +108,12 @@ namespace tinyvm
 
             while (true)
             {
-                const int ch = _getch();
+                auto char_res = Syscall(SyscallID::CONSOLE_READ_CHAR, {});
+                if (!char_res.success || char_res.data.empty())
+                {
+                    break;
+                }
+                const int ch = std::stoi(char_res.data[0]);
 
                 if (ch == '\r')
                 {
@@ -226,7 +144,12 @@ namespace tinyvm
 
                 if (ch == 0 || ch == 224)
                 {
-                    const int key = _getch();
+                    auto key_res = Syscall(SyscallID::CONSOLE_READ_CHAR, {});
+                    if (!key_res.success || key_res.data.empty())
+                    {
+                        continue;
+                    }
+                    const int key = std::stoi(key_res.data[0]);
 
                     if (key == 72 && historyIndex > 0)
                     {
@@ -250,15 +173,8 @@ namespace tinyvm
                     std::cout << static_cast<char>(ch);
                 }
             }
-        }
-#else
-        std::string ReadInputLine(const std::string&, const ShellState&, const CommandMap&)
-        {
-            std::string input;
-            std::getline(std::cin, input);
             return input;
         }
-#endif
 
         void PrintBanner()
         {
@@ -272,37 +188,11 @@ namespace tinyvm
    ██║   ██║██║ ╚████║   ██║    ╚████╔╝ ██║ ╚═╝ ██║
    ╚═╝   ╚═╝╚═╝  ╚═══╝   ╚═╝     ╚═══╝  ╚═╝     ╚═╝
 
-              TinyVM Shell v0.1
+               TinyVM Shell v0.1
 
 ========================================
 
 )";
-        }
-
-        std::unordered_map<std::string, std::string> ReadConfig()
-        {
-            std::unordered_map<std::string, std::string> values;
-            std::ifstream file(ConfigPath);
-
-            if (!file.is_open())
-            {
-                std::cerr << "Failed to open config.txt\n";
-                return values;
-            }
-
-            std::string line;
-            while (std::getline(file, line))
-            {
-                const std::size_t pos = line.find('=');
-                if (pos == std::string::npos)
-                {
-                    continue;
-                }
-
-                values[line.substr(0, pos)] = line.substr(pos + 1);
-            }
-
-            return values;
         }
     }
 
@@ -311,32 +201,25 @@ namespace tinyvm
         ShellState state;
         state.username = "user";
         state.hostname = "tinyvm";
-        state.root = fs::path("C:/tiny_vm");
-        state.home = state.root / "c" / "users" / state.username;
-        state.cwd = state.home;
+        state.cwd = "/c/users/user";
         state.running = true;
 
-        const auto config = ReadConfig();
-
-        if (auto it = config.find("username"); it != config.end() && !it->second.empty())
+        auto user_res = Syscall(SyscallID::GET_USERNAME, {});
+        if (user_res.success && !user_res.data.empty())
         {
-            state.username = it->second;
+            state.username = user_res.data[0];
         }
 
-        if (auto it = config.find("hostname"); it != config.end() && !it->second.empty())
+        auto host_res = Syscall(SyscallID::GET_HOSTNAME, {});
+        if (host_res.success && !host_res.data.empty())
         {
-            state.hostname = it->second;
+            state.hostname = host_res.data[0];
         }
 
-        state.root = fs::path("C:/tiny_vm").lexically_normal();
-        state.home = (state.root / "c" / "users" / state.username).lexically_normal();
-        state.cwd = state.home;
-
-        std::error_code error;
-        fs::create_directories(state.home, error);
-        if (error)
+        auto cwd_res = Syscall(SyscallID::GET_CWD, {});
+        if (cwd_res.success && !cwd_res.data.empty())
         {
-            std::cerr << "Could not initialize home directory: " << error.message() << '\n';
+            state.cwd = cwd_res.data[0];
         }
 
         return state;
