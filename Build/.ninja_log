@@ -1,8 +1,8 @@
 # ninja log v7
 54	1201	8042988234467671	CMakeFiles/TinyVM.dir/Src/main.cpp.obj	3a9c938a8d449eb9
 3095	3276	8043636597729584	TinyVM.exe	7e6eb33e9d0a7a02
-11	361	8043687998566610	build.ninja	52ce26c4f53bad4
-11	361	8043687998485447	C:/Users/viraj/tiny_vm/Build/cmake_install.cmake	52ce26c4f53bad4
+5	731	8043709050580907	build.ninja	52ce26c4f53bad4
+5	731	8043709050523884	C:/Users/viraj/tiny_vm/Build/cmake_install.cmake	52ce26c4f53bad4
 22	2769	8043634895489981	CMakeFiles/TinyShell.dir/Src/TinyShell/main.cpp.obj	3e98d0de4dd5c2f0
 9	413	8043636728168340	TinyShell.exe	932dae6f25ef9fb0
 113	18951	8043161601161429	CMakeFiles/TinyVM.dir/Src/TinyVM/main.cpp.obj	7e5956528fe1788
@@ -39,12 +39,16 @@
 8	9779	8043626316513587	CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj	80c0103674e0dc21
 2309	2616	8043145837624758	TinyKernal.exe	811271202ed00a30
 2910	3095	8043636595888569	libTinyKernal.a	492c143ec5dc44a3
-27	336	8043582858193839	CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj	b357cabd1fff5e26
+9	530	8043687998941708	CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj	8f9500313674d18c
 337	802	8043582861295982	libTVM_64.a	4a354dfe8096aaec
 16	115	8043591759123988	CMakeFiles/TinyEdit.dir/Src/TinyEdit/main.cpp.obj	64591a06bab9f63b
 116	289	8043591760121556	TinyEdit.exe	c385fd0bf08e9a49
-5	731	8043687998566610	build.ninja	52ce26c4f53bad4
-5	731	8043687998566610	C:/Users/viraj/tiny_vm/Build/cmake_install.cmake	52ce26c4f53bad4
 21	527	8043687999075418	CMakeFiles/TVM_64.dir/Src/TVM_64/register.cpp.obj	cf1ec8054784c108
 27	529	8043687999130451	CMakeFiles/TVM_64.dir/Src/TVM_64/decoder.cpp.obj	67f4c79c65eac7fd
-9	530	8043687998941708	CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj	8f9500313674d18c
+4	205	8043709050580907	build.ninja	52ce26c4f53bad4
+4	205	8043709050580907	C:/Users/viraj/tiny_vm/Build/cmake_install.cmake	52ce26c4f53bad4
+10	145	8043709051008369	CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj	85e5d4fecb7c26ab
+28	155	8043709051185710	CMakeFiles/TVM_64.dir/Src/TVM_64/decoder.cpp.obj	dd992f88f3be4197
+22	163	8043709051122125	CMakeFiles/TVM_64.dir/Src/TVM_64/register.cpp.obj	82d32473204d0646
+16	5610	8043709051066001	CMakeFiles/TVM_64.dir/Src/TVM_64/ISA.cpp.obj	b4fa23afa59429f3
+5610	6082	8043709107003538	libTVM_64.a	aef9cdd6d5de99f5
