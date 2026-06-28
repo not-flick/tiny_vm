@@ -1,106 +1,126 @@
 # TinyVM
 
-> *A virtual computer built from scratch.*
+> *A virtual computer built from the ground up.*
 
-TinyVM is an educational project that aims to build an entire computing stack from the ground up—from a custom shell to a virtual CPU, assembler, compiler, and eventually a complete operating system environment.
+TinyVM is an experimental virtual machine that evolves into a complete software ecosystem with its own CPU architecture, instruction set, assembler, kernel, runtime libraries, and operating environment.
 
-The goal isn't to recreate Windows or Linux. The goal is to understand how computers actually work by building every layer ourselves.
+The goal isn't to emulate an existing computer.
+
+The goal is to build one.
 
 ---
 
 ## Vision
 
-Most people write software **for** an operating system.
+Most virtual machines are designed to execute existing languages.
 
-TinyVM is about writing the operating system itself.
+TinyVM takes the opposite approach.
 
-Starting with nothing more than C++ and a terminal window, TinyVM gradually evolves into its own computing environment.
+Everything is built specifically for this machine.
 
-Eventually it will include:
+* Custom CPU Architecture
+* Custom Assembly Language
+* Custom Executable Format
+* Custom Kernel
+* Custom System Libraries
+* Custom Shell
+* Custom Toolchain
 
-* A custom shell
-* A virtual filesystem
-* A kernel
-* A virtual CPU
-* A custom instruction set
-* An assembler
-* An executable format
-* A compiler
-* A standard library
-* A package manager
-* (Maybe) a graphical desktop
-
-Every component is designed to be implemented from scratch to maximize learning.
+Every layer is designed together.
 
 ---
 
-## Current Features
-
-### Bootloader
-
-* Creates the TinyVM virtual disk
-* Initializes directory structure
-* Creates user directories
-* Generates configuration files
-* Launches TinyShell
-
-### TinyShell
-
-* Interactive shell
-* Linux-inspired prompt
+## Project Structure
 
 ```text
-username@tinyvm:~$
-```
-
-* Modular command system
-* Command parser
-* Filesystem navigation
-* Config loading
-* Unicode terminal support
-
-### File System
-
-Current virtual disk layout:
-
-```text
-C:\
-└── tiny_vm
-    ├── c
-    │   └── users
-    │       └── <username>
-    ├── system
-    │   └── config.txt
-    ├── boot
-    ├── bin
-    ├── temp
-    └── logs
+TinyVM/
+├── vm/                # CPU emulator
+├── kernel/            # Kernel
+├── shell/             # Command shell
+├── assembler/         # Assembler
+├── sdk/               # System libraries
+├── include/           # Public headers
+├── docs/              # Documentation
+├── examples/          # Sample programs
+└── tools/             # Utilities
 ```
 
 ---
 
-## Current Commands
+## Features
 
+* Virtual CPU
+* Custom instruction set
+* Memory management
+* Registers
+* Stack
+* Interrupt system
+* System call interface
+* Kernel API
+* Command shell
+* Executable loader
+* Custom assembler
+* Modular architecture
+
+---
+
+## Philosophy
+
+TinyVM is built around one simple idea:
+
+> **Own the entire stack.**
+
+Instead of relying on existing operating systems, instruction sets, executable formats, or development environments, TinyVM defines everything itself.
+
+That means every design decision—from registers to syscalls—is intentional.
+
+---
+
+## Current Progress
+
+* [x] CPU Emulator
+* [x] Kernel
+* [x] Basic Shell
+* [ ] System Calls
+* [ ] Assembler
+* [ ] Executable Loader
+* [ ] Runtime Library
+* [ ] File System
+* [ ] Debugger
+* [ ] Package Manager
+
+---
+
+## Building
+
+```bash
+git clone https://github.com/not-flick/tiny_vm.git
+
+cd tiny_vm
+
+cd Build
+
+cmake ..
+cmake --build .
 ```
-help
-clear
-exit
 
-pwd
-cd
-ls
+---
 
-mkdir
-touch
-rm
-rmdir
+## Example
 
-cat
-echo
+```asm
+section .text
 
-whoami
-hostname
-version
+start:
+    mov r0, message
+    call print
+
+    halt
+
+section .data
+
+message:
+    db "Hello, TinyVM!", 0
 ```
 
 ---
@@ -109,183 +129,42 @@ version
 
 ### Phase 1
 
-* ✅ Bootloader
-* ✅ TinyShell
-* ✅ Command parser
-* ✅ Virtual filesystem abstraction
-* ✅ Modular command architecture
-
----
+* CPU
+* Memory
+* Instructions
 
 ### Phase 2
 
-* Command history
-* Tab completion
-* Environment variables
-* Aliases
-* Better terminal interface
-
----
+* Kernel
+* Syscalls
+* Shell
 
 ### Phase 3
 
-* Kernel API
-* Process management
-* Memory abstraction
-* Filesystem abstraction
-
----
+* Assembler
+* Executable format
+* Libraries
 
 ### Phase 4
 
-* TinyVM Instruction Set Architecture (ISA)
-* Virtual CPU
-* Registers
-* Memory
-* Stack
-* Interrupts
-* System calls
-
----
+* Debugger
+* Optimizations
+* Standard SDK
 
 ### Phase 5
 
-* TinyASM
-* Linker
-* Executable loader
-* TinyVM executable format
-
----
-
-### Phase 6
-
-* Tiny Language
-* Compiler
-* Standard library
-
----
-
-### Phase 7
-
-* User-space applications
-* Package manager
-* Networking
-* GUI (experimental)
-
----
-
-## Project Structure
-
-```text
-TinyVM/
-│
-├── TinyVM/          # Bootloader
-├── TinyShell/       # Interactive shell
-├── Build/
-├── Docs/
-└── CMakeLists.txt
-```
-
-TinyShell internally is organized as:
-
-```text
-TinyShell/
-│
-├── Commands/
-├── parser.cpp
-├── filesystem.cpp
-├── shell.cpp
-└── main.cpp
-```
-
----
-
-## Building
-
-```bash
-git clone <repository>
-
-cd TinyVM
-
-cmake -B Build
-
-cmake --build Build
-```
-
-Run the bootloader:
-
-```bash
-Build/TinyVM.exe
-```
+* Self-hosting toolchain (long-term goal)
 
 ---
 
 ## Why?
 
-Because understanding computers is far more rewarding than simply using them.
+Because building a computer from scratch—even a virtual one—is one of the best ways to understand how computers actually work.
 
-TinyVM is an attempt to answer questions like:
-
-* How does a shell work?
-* How does a filesystem work?
-* What does a CPU actually execute?
-* How does an assembler translate instructions?
-* How do kernels communicate with programs?
-* What really happens when a program runs?
-
-Rather than reading about these concepts, TinyVM builds them.
-
----
-
-## Philosophy
-
-TinyVM values simplicity, readability, and learning over performance.
-
-Every subsystem is implemented incrementally, with the goal of making the internals understandable rather than optimized.
-
-The project is intended to grow layer by layer:
-
-```
-Shell
-↓
-
-Filesystem
-
-↓
-
-Kernel API
-
-↓
-
-Virtual CPU
-
-↓
-
-Assembler
-
-↓
-
-Compiler
-
-↓
-
-Operating System
-```
-
----
-
-## Contributing
-
-Suggestions, bug reports, and pull requests are welcome.
-
-The project is still in its early stages, so the architecture will continue to evolve.
+TinyVM is as much a learning project as it is a systems programming project.
 
 ---
 
 ## License
 
-Apache License 2.0
-
----
-
-> "The best way to understand a computer is to build one."
+Apache 2.0

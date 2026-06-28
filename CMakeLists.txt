@@ -16,6 +16,10 @@ add_library(TinyKernal
     Src/TinyKernal/syscall.cpp
 )
 
+add_library(TVM_64
+        Src/TVM_64/cpu.cpp
+)
+
 target_include_directories(TinyKernal PUBLIC
     Src/TinyKernal
 )
