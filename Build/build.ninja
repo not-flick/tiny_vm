@@ -303,6 +303,75 @@ build TinyShell.exe: CXX_EXECUTABLE_LINKER__TinyShell_ CMakeFiles/TinyShell.dir/
   TARGET_PDB = TinyShell.exe.dbg
   TARGET_SUPPORT_DIR = CMakeFiles\TinyShell.dir
 
+# =============================================================================
+# Object build statements for EXECUTABLE target TinyKernal
+
+
+#############################################
+# Order-only phony target for TinyKernal
+
+build cmake_object_order_depends_target_TinyKernal: phony || .
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/main.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/main.cpp || cmake_object_order_depends_target_TinyKernal
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\main.cpp.obj.d
+  FLAGS = -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/syscall.cpp || cmake_object_order_depends_target_TinyKernal
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\syscall.cpp.obj.d
+  FLAGS = -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/kernal.cpp || cmake_object_order_depends_target_TinyKernal
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\kernal.cpp.obj.d
+  FLAGS = -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/process.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/process.cpp || cmake_object_order_depends_target_TinyKernal
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\process.cpp.obj.d
+  FLAGS = -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/memory.cpp || cmake_object_order_depends_target_TinyKernal
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\memory.cpp.obj.d
+  FLAGS = -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+build CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj: CXX_COMPILER__TinyKernal_unscanned_ C$:/Users/viraj/tiny_vm/Src/TinyKernal/filesystems.cpp || cmake_object_order_depends_target_TinyKernal
+  DEP_FILE = CMakeFiles\TinyKernal.dir\Src\TinyKernal\filesystems.cpp.obj.d
+  FLAGS = -std=gnu++20
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinyKernal.dir\Src\TinyKernal
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target TinyKernal
+
+
+#############################################
+# Link the executable TinyKernal.exe
+
+build TinyKernal.exe: CXX_EXECUTABLE_LINKER__TinyKernal_ CMakeFiles/TinyKernal.dir/Src/TinyKernal/main.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/process.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\TinyKernal.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = TinyKernal.exe
+  TARGET_IMPLIB = libTinyKernal.dll.a
+  TARGET_PDB = TinyKernal.exe.dbg
+  TARGET_SUPPORT_DIR = CMakeFiles\TinyKernal.dir
+
 
 #############################################
 # Utility command for edit_cache
@@ -329,6 +398,8 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+build TinyKernal: phony TinyKernal.exe
+
 build TinyShell: phony TinyShell.exe
 
 build TinyVM: phony TinyVM.exe
@@ -341,7 +412,7 @@ build TinyVM: phony TinyVM.exe
 #############################################
 # Folder: C:/Users/viraj/tiny_vm/Build
 
-build all: phony TinyVM.exe TinyShell.exe
+build all: phony TinyVM.exe TinyShell.exe TinyKernal.exe
 
 # =============================================================================
 # Built-in targets
