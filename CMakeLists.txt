@@ -18,7 +18,20 @@ add_library(TinyKernal
 
 add_library(TVM_64
         Src/TVM_64/cpu.cpp
+        Src/TVM_64/ISA.cpp
+        Src/TVM_64/ISA.h
+        Src/TVM_64/register.cpp
+        Src/TVM_64/register.h
+        Src/TVM_64/decoder.cpp
+        Src/TVM_64/opcode.h
+        Src/TVM_64/instruction.h
 )
+
+target_link_libraries(TVM_64 PRIVATE TinyKernal)
+target_include_directories(TVM_64 PRIVATE
+        Src/TinyKernal
+)
+
 
 add_executable(TinyEdit
     Src/TinyEdit/main.cpp

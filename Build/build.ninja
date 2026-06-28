@@ -125,6 +125,34 @@ build CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj: CXX_COMPILER__TVM_64_unscann
   CONFIG = Debug
   DEP_FILE = CMakeFiles\TVM_64.dir\Src\TVM_64\cpu.cpp.obj.d
   FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernel
+  OBJECT_DIR = CMakeFiles\TVM_64.dir
+  OBJECT_FILE_DIR = CMakeFiles\TVM_64.dir\Src\TVM_64
+  TARGET_SUPPORT_DIR = CMakeFiles\TVM_64.dir
+
+build CMakeFiles/TVM_64.dir/Src/TVM_64/ISA.cpp.obj: CXX_COMPILER__TVM_64_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TVM_64/ISA.cpp || cmake_object_order_depends_target_TVM_64
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TVM_64.dir\Src\TVM_64\ISA.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernel
+  OBJECT_DIR = CMakeFiles\TVM_64.dir
+  OBJECT_FILE_DIR = CMakeFiles\TVM_64.dir\Src\TVM_64
+  TARGET_SUPPORT_DIR = CMakeFiles\TVM_64.dir
+
+build CMakeFiles/TVM_64.dir/Src/TVM_64/register.cpp.obj: CXX_COMPILER__TVM_64_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TVM_64/register.cpp || cmake_object_order_depends_target_TVM_64
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TVM_64.dir\Src\TVM_64\register.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernel
+  OBJECT_DIR = CMakeFiles\TVM_64.dir
+  OBJECT_FILE_DIR = CMakeFiles\TVM_64.dir\Src\TVM_64
+  TARGET_SUPPORT_DIR = CMakeFiles\TVM_64.dir
+
+build CMakeFiles/TVM_64.dir/Src/TVM_64/decoder.cpp.obj: CXX_COMPILER__TVM_64_unscanned_Debug C$:/Users/viraj/tiny_vm/Src/TVM_64/decoder.cpp || cmake_object_order_depends_target_TVM_64
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\TVM_64.dir\Src\TVM_64\decoder.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -IC:/Users/viraj/tiny_vm/Src/TinyKernel
   OBJECT_DIR = CMakeFiles\TVM_64.dir
   OBJECT_FILE_DIR = CMakeFiles\TVM_64.dir\Src\TVM_64
   TARGET_SUPPORT_DIR = CMakeFiles\TVM_64.dir
@@ -137,7 +165,7 @@ build CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj: CXX_COMPILER__TVM_64_unscann
 #############################################
 # Link the static library libTVM_64.a
 
-build libTVM_64.a: CXX_STATIC_LIBRARY_LINKER__TVM_64_Debug CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj
+build libTVM_64.a: CXX_STATIC_LIBRARY_LINKER__TVM_64_Debug CMakeFiles/TVM_64.dir/Src/TVM_64/cpu.cpp.obj CMakeFiles/TVM_64.dir/Src/TVM_64/ISA.cpp.obj CMakeFiles/TVM_64.dir/Src/TVM_64/register.cpp.obj CMakeFiles/TVM_64.dir/Src/TVM_64/decoder.cpp.obj
   CONFIG = Debug
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = CMakeFiles\TVM_64.dir
