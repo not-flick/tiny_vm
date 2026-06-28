@@ -40,6 +40,18 @@ add_executable(TinyShell
     Src/TinyShell/TinyShell.rc
 )
 
+#TinyKernal
+add_executable(TinyKernal
+    Src/TinyKernal/main.cpp
+        Src/TinyKernal/syscall.cpp
+        Src/TinyKernal/syscall.h
+        Src/TinyKernal/kernal.cpp
+        Src/TinyKernal/process.cpp
+        Src/TinyKernal/process.h
+        Src/TinyKernal/memory.cpp
+        Src/TinyKernal/memory.h
+)
+
 target_include_directories(TinyShell PRIVATE
     Src/TinyShell
 )
