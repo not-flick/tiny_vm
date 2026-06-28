@@ -1,13 +1,29 @@
-//
-// Created by viraj on 28-06-2026.
-//
+#pragma once
 
-#ifndef TINYVM_MEMORY_H
-#define TINYVM_MEMORY_H
+#include <windows.h>
+#include <cstddef>
+#include <cstdint>
 
+class MemoryManager
+{
+public:
+    void* Allocate(std::size_t bytes);
+    bool Free(void* address);
 
-class memory {
+    bool Protect(void* address,
+                 std::size_t bytes,
+                 DWORD protection);
+
+    bool Copy(void* destination,
+              const void* source,
+              std::size_t bytes);
+
+    bool Set(void* destination,
+             int value,
+             std::size_t bytes);
+
+    bool Lock(void* address,  std::size_t bytes);
+    bool Unlock(void* address, std::size_t bytes);
+
+    std::size_t PageSize() const;
 };
-
-
-#endif //TINYVM_MEMORY_H
