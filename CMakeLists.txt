@@ -5,12 +5,35 @@ project(TinyVM LANGUAGES CXX RC)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# ==========================
+# TinyKernel Library
+# ==========================
+add_library(TinyKernal
+    Src/TinyKernal/kernal.cpp
+    Src/TinyKernal/process.cpp
+    Src/TinyKernal/memory.cpp
+    Src/TinyKernal/filesystems.cpp
+    Src/TinyKernal/syscall.cpp
+)
+
+target_include_directories(TinyKernal PUBLIC
+    Src/TinyKernal
+)
+
+# ==========================
 # TinyVM
+# ==========================
 add_executable(TinyVM
     Src/TinyVM/main.cpp
 )
 
+target_link_libraries(TinyVM PRIVATE
+    TinyKernal
+)
+
+# ==========================
 # TinyShell
+# ==========================
 add_executable(TinyShell
     Src/TinyShell/main.cpp
     Src/TinyShell/shell.cpp
@@ -40,22 +63,12 @@ add_executable(TinyShell
     Src/TinyShell/TinyShell.rc
 )
 
-#TinyKernal
-add_executable(TinyKernal
-    Src/TinyKernal/main.cpp
-        Src/TinyKernal/syscall.cpp
-        Src/TinyKernal/syscall.h
-        Src/TinyKernal/kernal.cpp
-        Src/TinyKernal/process.cpp
-        Src/TinyKernal/process.h
-        Src/TinyKernal/memory.cpp
-        Src/TinyKernal/memory.h
-        Src/TinyKernal/filesystems.cpp
-        Src/TinyKernal/filesystems.h
-)
-
 target_include_directories(TinyShell PRIVATE
     Src/TinyShell
+)
+
+target_link_libraries(TinyShell PRIVATE
+    TinyKernal
 )
 
 add_custom_command(TARGET TinyShell POST_BUILD

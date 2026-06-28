@@ -1,13 +1,44 @@
-//
-// Created by viraj on 28-06-2026.
-//
+#pragma once
 
-#ifndef TINYVM_SYSCALL_H
-#define TINYVM_SYSCALL_H
+#include <string>
+#include <vector>
 
+class TinyKernel;
 
-class syscall {
+enum class SyscallID
+{
+    PRINT,
+    CLEAR,
+
+    CREATE_FILE,
+    DELETE_FILE,
+
+    CREATE_DIRECTORY,
+    DELETE_DIRECTORY,
+
+    READ_FILE,
+    WRITE_FILE,
+
+    FILE_EXISTS,
+
+    RUN_PROCESS,
+    KILL_PROCESS,
+
+    ALLOCATE_MEMORY,
+    FREE_MEMORY,
+
+    EXIT
 };
 
+class SyscallDispatcher
+{
+public:
+    explicit SyscallDispatcher(TinyKernel& kernel);
 
-#endif //TINYVM_SYSCALL_H
+    bool Handle(
+        SyscallID id,
+        const std::vector<std::string>& args);
+
+private:
+    TinyKernel& kernel;
+};

@@ -1,9 +1,24 @@
 #include "kernal.h"
+
 #include <iostream>
-#include <ostream>
 
-class TinyKernel
+void TinyKernel::Boot()
 {
-public:
+    console.Print("=====================================\n");
+    console.Print(" TinyKernal Boot\n");
+    console.Print("=====================================\n\n");
 
-};
+    console.Print("Memory page size : ");
+    std::cout << memory.PageSize() << " bytes\n";
+
+    console.Print("Virtual disk     : ");
+    console.Print(filesystem.Exists("C:/tiny_vm") ? "mounted\n" : "not found\n");
+
+    console.Print("Status           : Ready\n\n");
+}
+
+void TinyKernel::Shutdown()
+{
+    console.Print("TinyKernal shutdown complete.\n");
+}
+

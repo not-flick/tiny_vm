@@ -42,3 +42,13 @@
 29	532	8043133147429686	TinyVM.exe	560da3486633cba2
 21	2370	8043133147348763	CMakeFiles/TinyKernal.dir/Src/TinyKernal/filesystems.cpp.obj	3037c470950e9d58
 2371	2617	8043133170851208	TinyKernal.exe	811271202ed00a30
+43	1986	8043142733834437	CMakeFiles/TinyKernal.dir/Src/TinyKernal/memory.cpp.obj	a8b0320947c7b2ab
+46	2360	8043143585774227	CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj	d59d99f7a05b12e5
+29	2450	8043143585611017	CMakeFiles/TinyKernal.dir/Src/TinyKernal/main.cpp.obj	c0b58e8464456a84
+39	2506	8043143585711395	CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj	97027ff959c96138
+2506	2802	8043143610377209	TinyKernal.exe	811271202ed00a30
+25	2171	8043143846613432	CMakeFiles/TinyKernal.dir/Src/TinyKernal/syscall.cpp.obj	97027ff959c96138
+2172	2527	8043143868080325	TinyKernal.exe	811271202ed00a30
+25	2301	8043145814789339	CMakeFiles/TinyKernal.dir/Src/TinyKernal/main.cpp.obj	c0b58e8464456a84
+32	2309	8043145814859468	CMakeFiles/TinyKernal.dir/Src/TinyKernal/kernal.cpp.obj	d59d99f7a05b12e5
+2309	2616	8043145837624758	TinyKernal.exe	811271202ed00a30
