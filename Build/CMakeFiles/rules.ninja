@@ -6,15 +6,15 @@
 # It is included in the main 'build.ninja'.
 
 # =============================================================================
-# Project: TinyVM
-# Configurations: Debug
+# Project: TinyShell
+# Configurations: 
 # =============================================================================
 # =============================================================================
 
 #############################################
 # Rule for generating CXX dependencies.
 
-rule CXX_SCAN__TinyKernal_Debug
+rule CXX_SCAN__TinyKernal_
   depfile = $DEP_FILE
   command = C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -E -x c++ $in -MT $DYNDEP_INTERMEDIATE_FILE -MD -MF $DEP_FILE -fmodules-ts -fdeps-file=$DYNDEP_INTERMEDIATE_FILE -fdeps-target=$OBJ_FILE -fdeps-format=p1689r5 -o $PREPROCESSED_OUTPUT_FILE
   description = Scanning $in for CXX dependencies
@@ -23,7 +23,7 @@ rule CXX_SCAN__TinyKernal_Debug
 #############################################
 # Rule to generate ninja dyndep files for CXX.
 
-rule CXX_DYNDEP__TinyKernal_Debug
+rule CXX_DYNDEP__TinyKernal_
   command = C:\msys64\ucrt64\bin\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\TinyKernal.dir\CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
@@ -34,7 +34,7 @@ rule CXX_DYNDEP__TinyKernal_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyKernal_scanned_Debug
+rule CXX_COMPILER__TinyKernal_scanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -fmodules-ts -fmodule-mapper=$DYNDEP_MODULE_MAP_FILE -MD -fdeps-format=p1689r5 -x c++ -o $out -c $in
@@ -44,7 +44,7 @@ rule CXX_COMPILER__TinyKernal_scanned_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyKernal_unscanned_Debug
+rule CXX_COMPILER__TinyKernal_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -54,7 +54,7 @@ rule CXX_COMPILER__TinyKernal_unscanned_Debug
 #############################################
 # Rule for linking CXX static library.
 
-rule CXX_STATIC_LIBRARY_LINKER__TinyKernal_Debug
+rule CXX_STATIC_LIBRARY_LINKER__TinyKernal_
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\msys64\ucrt64\bin\cmake.exe -E rm -f $TARGET_FILE && C:\msys64\ucrt64\bin\ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\msys64\ucrt64\bin\ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   restat = $RESTAT
@@ -63,7 +63,7 @@ rule CXX_STATIC_LIBRARY_LINKER__TinyKernal_Debug
 #############################################
 # Rule for generating CXX dependencies.
 
-rule CXX_SCAN__TVM_64_Debug
+rule CXX_SCAN__TVM_64_
   depfile = $DEP_FILE
   command = C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -E -x c++ $in -MT $DYNDEP_INTERMEDIATE_FILE -MD -MF $DEP_FILE -fmodules-ts -fdeps-file=$DYNDEP_INTERMEDIATE_FILE -fdeps-target=$OBJ_FILE -fdeps-format=p1689r5 -o $PREPROCESSED_OUTPUT_FILE
   description = Scanning $in for CXX dependencies
@@ -72,7 +72,7 @@ rule CXX_SCAN__TVM_64_Debug
 #############################################
 # Rule to generate ninja dyndep files for CXX.
 
-rule CXX_DYNDEP__TVM_64_Debug
+rule CXX_DYNDEP__TVM_64_
   command = C:\msys64\ucrt64\bin\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\TVM_64.dir\CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
@@ -83,7 +83,7 @@ rule CXX_DYNDEP__TVM_64_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TVM_64_scanned_Debug
+rule CXX_COMPILER__TVM_64_scanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -fmodules-ts -fmodule-mapper=$DYNDEP_MODULE_MAP_FILE -MD -fdeps-format=p1689r5 -x c++ -o $out -c $in
@@ -93,7 +93,7 @@ rule CXX_COMPILER__TVM_64_scanned_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TVM_64_unscanned_Debug
+rule CXX_COMPILER__TVM_64_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -103,7 +103,7 @@ rule CXX_COMPILER__TVM_64_unscanned_Debug
 #############################################
 # Rule for linking CXX static library.
 
-rule CXX_STATIC_LIBRARY_LINKER__TVM_64_Debug
+rule CXX_STATIC_LIBRARY_LINKER__TVM_64_
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\msys64\ucrt64\bin\cmake.exe -E rm -f $TARGET_FILE && C:\msys64\ucrt64\bin\ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\msys64\ucrt64\bin\ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   restat = $RESTAT
@@ -112,7 +112,7 @@ rule CXX_STATIC_LIBRARY_LINKER__TVM_64_Debug
 #############################################
 # Rule for generating CXX dependencies.
 
-rule CXX_SCAN__TinyEdit_Debug
+rule CXX_SCAN__TinyEdit_
   depfile = $DEP_FILE
   command = C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -E -x c++ $in -MT $DYNDEP_INTERMEDIATE_FILE -MD -MF $DEP_FILE -fmodules-ts -fdeps-file=$DYNDEP_INTERMEDIATE_FILE -fdeps-target=$OBJ_FILE -fdeps-format=p1689r5 -o $PREPROCESSED_OUTPUT_FILE
   description = Scanning $in for CXX dependencies
@@ -121,7 +121,7 @@ rule CXX_SCAN__TinyEdit_Debug
 #############################################
 # Rule to generate ninja dyndep files for CXX.
 
-rule CXX_DYNDEP__TinyEdit_Debug
+rule CXX_DYNDEP__TinyEdit_
   command = C:\msys64\ucrt64\bin\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\TinyEdit.dir\CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
@@ -132,7 +132,7 @@ rule CXX_DYNDEP__TinyEdit_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyEdit_scanned_Debug
+rule CXX_COMPILER__TinyEdit_scanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -fmodules-ts -fmodule-mapper=$DYNDEP_MODULE_MAP_FILE -MD -fdeps-format=p1689r5 -x c++ -o $out -c $in
@@ -142,7 +142,7 @@ rule CXX_COMPILER__TinyEdit_scanned_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyEdit_unscanned_Debug
+rule CXX_COMPILER__TinyEdit_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -152,7 +152,7 @@ rule CXX_COMPILER__TinyEdit_unscanned_Debug
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__TinyEdit_Debug
+rule CXX_EXECUTABLE_LINKER__TinyEdit_
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\msys64\ucrt64\bin\c++.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
@@ -161,7 +161,7 @@ rule CXX_EXECUTABLE_LINKER__TinyEdit_Debug
 #############################################
 # Rule for generating CXX dependencies.
 
-rule CXX_SCAN__TinyVM_Debug
+rule CXX_SCAN__TinyVM_
   depfile = $DEP_FILE
   command = C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -E -x c++ $in -MT $DYNDEP_INTERMEDIATE_FILE -MD -MF $DEP_FILE -fmodules-ts -fdeps-file=$DYNDEP_INTERMEDIATE_FILE -fdeps-target=$OBJ_FILE -fdeps-format=p1689r5 -o $PREPROCESSED_OUTPUT_FILE
   description = Scanning $in for CXX dependencies
@@ -170,7 +170,7 @@ rule CXX_SCAN__TinyVM_Debug
 #############################################
 # Rule to generate ninja dyndep files for CXX.
 
-rule CXX_DYNDEP__TinyVM_Debug
+rule CXX_DYNDEP__TinyVM_
   command = C:\msys64\ucrt64\bin\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\TinyVM.dir\CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
@@ -181,7 +181,7 @@ rule CXX_DYNDEP__TinyVM_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyVM_scanned_Debug
+rule CXX_COMPILER__TinyVM_scanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -fmodules-ts -fmodule-mapper=$DYNDEP_MODULE_MAP_FILE -MD -fdeps-format=p1689r5 -x c++ -o $out -c $in
@@ -191,7 +191,7 @@ rule CXX_COMPILER__TinyVM_scanned_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyVM_unscanned_Debug
+rule CXX_COMPILER__TinyVM_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -201,7 +201,7 @@ rule CXX_COMPILER__TinyVM_unscanned_Debug
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__TinyVM_Debug
+rule CXX_EXECUTABLE_LINKER__TinyVM_
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\msys64\ucrt64\bin\c++.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
@@ -210,7 +210,7 @@ rule CXX_EXECUTABLE_LINKER__TinyVM_Debug
 #############################################
 # Rule for generating CXX dependencies.
 
-rule CXX_SCAN__TinyShell_Debug
+rule CXX_SCAN__TinyShell_
   depfile = $DEP_FILE
   command = C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -E -x c++ $in -MT $DYNDEP_INTERMEDIATE_FILE -MD -MF $DEP_FILE -fmodules-ts -fdeps-file=$DYNDEP_INTERMEDIATE_FILE -fdeps-target=$OBJ_FILE -fdeps-format=p1689r5 -o $PREPROCESSED_OUTPUT_FILE
   description = Scanning $in for CXX dependencies
@@ -219,7 +219,7 @@ rule CXX_SCAN__TinyShell_Debug
 #############################################
 # Rule to generate ninja dyndep files for CXX.
 
-rule CXX_DYNDEP__TinyShell_Debug
+rule CXX_DYNDEP__TinyShell_
   command = C:\msys64\ucrt64\bin\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\TinyShell.dir\CXXDependInfo.json --lang=CXX --modmapfmt=gcc --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
@@ -230,7 +230,7 @@ rule CXX_DYNDEP__TinyShell_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyShell_scanned_Debug
+rule CXX_COMPILER__TinyShell_scanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -fmodules-ts -fmodule-mapper=$DYNDEP_MODULE_MAP_FILE -MD -fdeps-format=p1689r5 -x c++ -o $out -c $in
@@ -240,7 +240,7 @@ rule CXX_COMPILER__TinyShell_scanned_Debug
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__TinyShell_unscanned_Debug
+rule CXX_COMPILER__TinyShell_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -250,7 +250,7 @@ rule CXX_COMPILER__TinyShell_unscanned_Debug
 #############################################
 # Rule for compiling RC files.
 
-rule RC_COMPILER__TinyShell_unscanned_Debug
+rule RC_COMPILER__TinyShell_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\ucrt64\bin\windres.exe -O coff $DEFINES $INCLUDES $FLAGS $in $out
@@ -260,7 +260,7 @@ rule RC_COMPILER__TinyShell_unscanned_Debug
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__TinyShell_Debug
+rule CXX_EXECUTABLE_LINKER__TinyShell_
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\msys64\ucrt64\bin\c++.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
