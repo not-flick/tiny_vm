@@ -5,6 +5,11 @@ project(TinyVM LANGUAGES CXX RC)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+project(TinyShell)
+
+enable_language(RC)
+
+
 # ==========================
 # TinyKernel Library
 # ==========================
@@ -84,6 +89,7 @@ add_executable(TinyShell
     Src/TinyShell/Commands/set.cpp
     Src/TinyShell/Commands/unset.cpp
     Src/TinyShell/TinyShell.rc
+        Src/TinyShell/resource.h
 )
 
 target_include_directories(TinyShell PRIVATE

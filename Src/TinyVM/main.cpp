@@ -69,25 +69,26 @@ int main()
 
     config.close();
 
-    STARTUPINFOA si{};
+    STARTUPINFOW si{};
     PROCESS_INFORMATION pi{};
 
     si.cb = sizeof(si);
 
+    std::filesystem::path shell =
+        std::filesystem::current_path() / "TinyShell.exe";
 
-    CreateProcessA(
-        "C:\\Users\\viraj\\tiny_vm\\Build\\TinyShell.exe",
+    CreateProcessW(
+        shell.c_str(),   // LPCWSTR
         nullptr,
         nullptr,
         nullptr,
         FALSE,
         CREATE_NEW_CONSOLE,
         nullptr,
-        "C:\\tiny_vm",
+        nullptr,
         &si,
         &pi
     );
-
 
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);

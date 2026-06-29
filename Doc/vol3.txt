@@ -1,0 +1,522 @@
+# TinyVM Developer Manual
+
+# Volume III — TinyShell
+
+**Version:** Pre-Alpha (June 2026)
+
+---
+
+# 1. Introduction
+
+TinyShell is the primary command-line interface (CLI) of TinyVM.
+
+It serves as the user's first interaction point with the TinyVM environment and provides a familiar terminal experience for navigating the filesystem, managing files, configuring the environment and launching applications.
+
+Unlike conventional command interpreters, TinyShell is designed specifically for TinyVM and communicates with TinyKernal rather than directly with the host operating system.
+
+As TinyVM evolves, TinyShell will become the default environment from which all TVM_64 applications are launched.
+
+---
+
+# 2. Design Goals
+
+TinyShell was designed around the following principles.
+
+* Lightweight
+* Fast startup
+* Easy to extend
+* Familiar Unix-like workflow
+* Independent from the host operating system
+* Fully integrated with TinyKernal
+
+The shell intentionally avoids unnecessary complexity while providing the functionality required for software development inside TinyVM.
+
+---
+
+# 3. Architecture
+
+TinyShell consists of four major components.
+
+```text
+                TinyShell
+
+                    │
+
+             User Input Loop
+
+                    │
+
+               Command Parser
+
+                    │
+
+          Command Dispatcher
+
+                    │
+
+          Built-in Commands
+
+                    │
+
+               TinyKernal API
+```
+
+Each component performs one well-defined task.
+
+---
+
+# 4. Execution Pipeline
+
+Every command entered by the user follows the same execution path.
+
+```text
+Keyboard
+
+↓
+
+Input Buffer
+
+↓
+
+Tokenizer
+
+↓
+
+Parser
+
+↓
+
+Dispatcher
+
+↓
+
+Execute Command
+
+↓
+
+Return Result
+
+↓
+
+Display Prompt
+```
+
+This pipeline remains identical regardless of the command being executed.
+
+---
+
+# 5. Interactive Loop
+
+TinyShell continuously repeats the following sequence.
+
+```text
+Display Prompt
+
+↓
+
+Read Line
+
+↓
+
+Parse Command
+
+↓
+
+Execute
+
+↓
+
+Display Result
+
+↓
+
+Repeat
+```
+
+Execution terminates only when the `exit` command is issued.
+
+---
+
+# 6. Prompt
+
+The shell prompt represents the current working directory and active user.
+
+Typical prompt format:
+
+```text
+user@tinyvm:/home/user$
+```
+
+The prompt is regenerated before every command.
+
+Future versions may support:
+
+* colors
+* themes
+* git branch information
+* custom prompts
+
+---
+
+# 7. Command Parsing
+
+The parser separates user input into tokens.
+
+Example:
+
+```text
+mkdir projects
+```
+
+becomes
+
+```text
+Command
+
+mkdir
+
+Arguments
+
+projects
+```
+
+Whitespace is ignored outside quoted strings.
+
+Future parser improvements may include:
+
+* quoted strings
+* escaping
+* pipes
+* redirection
+* command substitution
+
+---
+
+# 8. Command Dispatcher
+
+After parsing, TinyShell forwards execution to the appropriate command implementation.
+
+Conceptually,
+
+```text
+Input
+
+↓
+
+Command Name
+
+↓
+
+Lookup
+
+↓
+
+Execute Function
+```
+
+Every built-in command has its own implementation file, making the shell highly modular and easy to extend.
+
+---
+
+# 9. Built-in Commands
+
+TinyShell currently includes a growing collection of built-in commands.
+
+### Filesystem
+
+```text
+pwd
+cd
+ls
+mkdir
+touch
+rm
+rmdir
+cat
+```
+
+These commands communicate with TinyKernal's Virtual Filesystem.
+
+---
+
+### Shell Utilities
+
+```text
+help
+clear
+exit
+echo
+history
+```
+
+These commands provide general shell functionality.
+
+---
+
+### System Information
+
+```text
+whoami
+hostname
+version
+```
+
+These expose information about the TinyVM environment.
+
+---
+
+### Environment
+
+```text
+set
+unset
+alias
+unalias
+```
+
+These commands modify the current shell session.
+
+---
+
+# 10. Command Descriptions
+
+## help
+
+Displays a list of available commands together with a short description.
+
+---
+
+## clear
+
+Clears the terminal screen while preserving the current shell session.
+
+---
+
+## exit
+
+Terminates TinyShell.
+
+Future versions may also terminate the currently running TVM_64 application through the Exit syscall.
+
+---
+
+## pwd
+
+Prints the current working directory.
+
+---
+
+## cd
+
+Changes the current working directory.
+
+---
+
+## ls
+
+Lists files and directories contained in the current directory.
+
+---
+
+## mkdir
+
+Creates a new directory.
+
+---
+
+## touch
+
+Creates a new file.
+
+---
+
+## rm
+
+Deletes a file.
+
+---
+
+## rmdir
+
+Deletes an empty directory.
+
+---
+
+## cat
+
+Displays the contents of a text file.
+
+---
+
+## echo
+
+Prints text to the console.
+
+---
+
+## whoami
+
+Displays the current TinyVM user.
+
+---
+
+## hostname
+
+Displays the TinyVM machine name.
+
+---
+
+## version
+
+Displays the current TinyVM version.
+
+---
+
+## history
+
+Displays previously executed commands.
+
+---
+
+## alias
+
+Creates command aliases.
+
+Example:
+
+```text
+alias ll=ls
+```
+
+---
+
+## unalias
+
+Removes an existing alias.
+
+---
+
+## set
+
+Creates or modifies environment variables.
+
+---
+
+## unset
+
+Deletes environment variables.
+
+---
+
+# 11. Filesystem Integration
+
+TinyShell never manipulates host files directly.
+
+Instead,
+
+```text
+TinyShell
+
+↓
+
+TinyKernal Filesystem
+
+↓
+
+Host Filesystem
+```
+
+This abstraction allows TinyShell to remain independent of the underlying operating system.
+
+---
+
+# 12. Relationship with TinyKernal
+
+TinyShell depends heavily on TinyKernal.
+
+TinyKernal provides:
+
+* filesystem services
+* console output
+* future process management
+* future executable loading
+
+TinyShell itself performs no privileged operations.
+
+---
+
+# 13. Relationship with TVM_64
+
+Currently TinyShell launches built-in functionality.
+
+Future versions will additionally execute TVM_64 programs.
+
+Example:
+
+```text
+hello.tvx
+
+↓
+
+TinyShell
+
+↓
+
+TinyKernal
+
+↓
+
+Process Manager
+
+↓
+
+TVM_64
+
+↓
+
+Program Executes
+```
+
+This allows TinyShell to become the primary application launcher within TinyVM.
+
+---
+
+# 14. Future Features
+
+The following functionality is planned.
+
+* Pipe operator (`|`)
+* Output redirection (`>`)
+* Input redirection (`<`)
+* Command chaining (`&&`)
+* Wildcard expansion
+* Auto-completion
+* Command suggestions
+* Shell scripting
+* Startup configuration file
+* Color themes
+* Plugin system
+
+These features will gradually transform TinyShell into a complete command-line environment.
+
+---
+
+# 15. Design Philosophy
+
+TinyShell intentionally resembles traditional Unix shells while remaining a native component of TinyVM.
+
+It avoids direct interaction with the host operating system and instead communicates exclusively with TinyKernal.
+
+This separation ensures that the shell remains portable, modular and capable of running atop future versions of TinyVM regardless of the underlying host platform.
+
+---
+
+# 16. Summary
+
+TinyShell is the user-facing interface of TinyVM.
+
+It combines command parsing, filesystem interaction and environment management into a lightweight shell specifically designed for the TinyVM ecosystem.
+
+As TVM_64, TinyKernal and FLASM mature, TinyShell will evolve into a complete development environment capable of editing, assembling and executing software entirely within TinyVM.
+
+The next volume introduces **TVM_64**, the custom 64-bit virtual processor that forms the computational core of TinyVM.

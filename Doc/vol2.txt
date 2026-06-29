@@ -1,0 +1,2371 @@
+# TinyVM Developer Manual
+
+## Volume II — TinyKernal
+
+### Chapter 1 — TinyKernal Architecture
+
+**Version:** Pre-Alpha (June 2026)
+
+---
+
+# 1. Introduction
+
+TinyKernal is the operating system layer of TinyVM.
+
+Its primary responsibility is to provide an abstraction between applications executing inside TinyVM and the host operating system.
+
+Rather than allowing software to communicate directly with Windows, applications communicate exclusively with TinyKernal through a well-defined syscall interface.
+
+TinyKernal therefore behaves as the service provider for every application executed inside the TinyVM ecosystem.
+
+Although TinyVM currently executes on top of Windows, the architecture intentionally isolates Windows-specific functionality behind TinyKernal so that higher layers remain independent of the host operating system.
+
+---
+
+# 2. Design Goals
+
+TinyKernal was designed around five major objectives.
+
+### Host Abstraction
+
+Programs should never need to know which operating system is hosting TinyVM.
+
+Whether TinyVM executes on Windows, Linux or another platform, programs should communicate only with TinyKernal.
+
+---
+
+### Modularity
+
+Each subsystem has a single responsibility.
+
+Examples include:
+
+* Memory Management
+* Process Management
+* Filesystem
+* Syscall Dispatcher
+
+This keeps the kernel maintainable and allows new functionality to be introduced without modifying unrelated code.
+
+---
+
+### Educational Simplicity
+
+TinyKernal is intentionally simpler than modern operating system kernels.
+
+The objective is understanding, not feature completeness.
+
+Complex mechanisms such as virtual paging, interrupt handling or kernel scheduling are intentionally postponed until the architecture itself becomes stable.
+
+---
+
+### Extensibility
+
+Every subsystem is designed so additional functionality can be introduced later without requiring major redesigns.
+
+Examples include:
+
+* process scheduling
+* virtual memory
+* permissions
+* multitasking
+* networking
+
+---
+
+### Platform Independence
+
+Windows-specific APIs should remain confined to TinyKernal.
+
+Higher-level software should never depend directly upon them.
+
+---
+
+# 3. Architectural Position
+
+TinyKernal occupies the middle layer of TinyVM.
+
+```text
+             Applications
+                  │
+                  ▼
+             TinyShell
+                  │
+                  ▼
+             TinyKernal
+                  │
+      ┌───────────┼───────────┐
+      │           │           │
+ Filesystem    Memory     Processes
+                  │
+                  ▼
+          Host Operating System
+                  │
+                  ▼
+              Hardware
+```
+
+TinyKernal therefore behaves similarly to the kernel of a traditional operating system.
+
+---
+
+# 4. Responsibilities
+
+TinyKernal currently provides or plans to provide the following services.
+
+## Filesystem
+
+Responsibilities include
+
+* creating files
+* deleting files
+* directory management
+* path handling
+* file reading
+* file writing
+
+The filesystem hides the underlying Windows filesystem from TinyVM applications.
+
+---
+
+## Memory Management
+
+Responsible for
+
+* virtual memory allocation
+* memory ownership
+* future heap allocation
+* future stack allocation
+
+The current implementation provides the foundation for future expansion into a complete virtual memory manager.
+
+---
+
+## Process Management
+
+TinyKernal introduces the concept of a process independently of the host operating system.
+
+Future responsibilities include
+
+* process creation
+* process termination
+* process identifiers
+* scheduling
+* process isolation
+
+---
+
+## System Calls
+
+The syscall dispatcher forms the communication interface between applications and TinyKernal.
+
+Applications request services by invoking system calls rather than calling host APIs directly.
+
+Examples include
+
+* printing text
+* reading files
+* creating directories
+* exiting programs
+
+---
+
+# 5. Current Internal Modules
+
+The TinyKernal subsystem is organised into several source files.
+
+```text
+TinyKernal/
+
+kernal.cpp
+memory.cpp
+process.cpp
+filesystem.cpp
+syscall.cpp
+```
+
+Each module performs a distinct responsibility.
+
+---
+
+## kernal.cpp
+
+Acts as the primary coordination point for TinyKernal.
+
+Responsibilities include
+
+* kernel initialisation
+* subsystem startup
+* future global kernel state
+
+---
+
+## memory.cpp
+
+Contains the implementation of TinyVM's memory management layer.
+
+Future development will gradually evolve this into a complete virtual memory subsystem.
+
+---
+
+## process.cpp
+
+Implements process abstractions used by TinyVM.
+
+Although currently lightweight, it establishes the framework required for future multitasking.
+
+---
+
+## filesystem.cpp
+
+Provides TinyVM's filesystem services.
+
+Rather than exposing Windows filesystem functions directly, this module offers a consistent interface that can later support multiple backends.
+
+---
+
+## syscall.cpp
+
+Acts as the gateway between applications and TinyKernal.
+
+Every syscall eventually reaches this module before being dispatched to the appropriate subsystem.
+
+---
+
+# 6. Communication Model
+
+TinyKernal communicates with every major subsystem.
+
+```text
+                 TinyShell
+                     │
+                     ▼
+                TinyKernal
+        ┌────────┼────────┐
+        │        │        │
+     Memory   Process   Filesystem
+        │
+        ▼
+     Windows API
+```
+
+Future TVM_64 applications will communicate with TinyKernal through exactly the same interface.
+
+---
+
+# 7. Relationship with TVM_64
+
+TinyKernal is intentionally independent of the CPU implementation.
+
+TVM_64 will execute instructions.
+
+TinyKernal will provide operating system services.
+
+The CPU should never directly manipulate the filesystem or console.
+
+Instead:
+
+```text
+TVM Program
+
+↓
+
+TVM_64 executes instructions
+
+↓
+
+syscall instruction
+
+↓
+
+TinyKernal
+
+↓
+
+Requested service executes
+```
+
+This separation closely mirrors the relationship between processors and kernels in conventional operating systems.
+
+---
+
+# 8. Boot Sequence
+
+Current TinyVM startup follows a simplified sequence.
+
+```text
+TinyVM Launcher
+
+↓
+
+Initialise TinyKernal
+
+↓
+
+Initialise subsystem managers
+
+↓
+
+Start TinyShell
+
+↓
+
+Accept user commands
+```
+
+Future versions will insert TVM_64 initialisation before launching applications.
+
+---
+
+# 9. Current Limitations
+
+TinyKernal remains in an early stage of development.
+
+Features not yet implemented include
+
+* multitasking
+* scheduler
+* interrupts
+* paging
+* virtual address translation
+* device drivers
+* user/kernel privilege separation
+* networking
+* permissions
+
+These limitations are intentional.
+
+The project prioritises architectural correctness over rapid feature expansion.
+
+---
+
+# 10. Design Philosophy
+
+TinyKernal deliberately avoids becoming tightly coupled to Windows.
+
+Instead, Windows is treated merely as a hardware abstraction layer for TinyVM.
+
+The long-term objective is that software written for TinyVM should execute without modification regardless of the underlying host operating system.
+
+Applications should therefore consider TinyKernal—not Windows—to be their operating system.
+
+---
+
+# 11. Future Evolution
+
+The planned evolution of TinyKernal is expected to proceed in roughly the following order.
+
+Phase 1
+
+✓ Filesystem
+
+✓ Process abstraction
+
+✓ Memory abstraction
+
+✓ Syscall dispatcher
+
+---
+
+Phase 2
+
+• TVM_64 integration
+
+• Native program execution
+
+• Register-aware syscalls
+
+---
+
+Phase 3
+
+• Heap manager
+
+• Stack manager
+
+• Executable loader
+
+---
+
+Phase 4
+
+• Scheduler
+
+• Multitasking
+
+• IPC
+
+---
+
+Phase 5
+
+• Device abstraction
+
+• Networking
+
+• Security model
+
+---
+
+# Chapter Summary
+
+TinyKernal forms the operating system foundation of TinyVM.
+
+Rather than emulating existing kernels, it introduces a simplified architecture specifically designed to support the TVM_64 virtual processor and its software ecosystem.
+
+Its modular structure separates filesystem management, memory management, process management and syscall handling into independent subsystems, allowing the kernel to evolve incrementally while maintaining a clean and understandable architecture.
+
+The following chapter examines TinyKernal's **Memory Management** subsystem in detail.
+
+
+
+# TinyVM Developer Manual
+
+## Volume II — TinyKernal
+
+### Chapter 2 — Memory Management
+
+**Version:** Pre-Alpha (June 2026)
+
+---
+
+# 1. Introduction
+
+The Memory Manager is responsible for managing all virtual memory used by TinyVM applications.
+
+Although the current implementation is intentionally lightweight, the subsystem establishes the foundation upon which every future program, process and executable will depend.
+
+Unlike modern operating systems, TinyVM initially adopts a simplified memory model to maximize readability and educational value.
+
+Complex mechanisms such as paging, virtual address translation and memory protection are intentionally deferred until the core architecture has stabilized.
+
+---
+
+# 2. Objectives
+
+The Memory Manager exists to solve four primary problems.
+
+• Allocate memory for applications.
+
+• Track ownership of allocated memory.
+
+• Prevent accidental corruption of unrelated memory regions.
+
+• Provide a consistent interface between TVM_64 and TinyKernal.
+
+Every memory operation inside TinyVM should eventually pass through this subsystem.
+
+---
+
+# 3. Position Within TinyVM
+
+```text
+                 TVM Program
+                       │
+                       ▼
+                    TVM_64
+                       │
+                load/store instructions
+                       │
+                       ▼
+                Memory Manager
+                       │
+                       ▼
+             Virtual Memory Space
+                       │
+                       ▼
+                Host Operating System
+```
+
+TVM_64 should never manipulate host memory directly.
+
+Instead, all reads and writes should pass through the Memory Manager.
+
+---
+
+# 4. Memory Model
+
+TinyVM treats memory as a contiguous sequence of bytes.
+
+Conceptually,
+
+```text
+Address
+
+0x00000000
+│
+├─────────────────────────────
+│
+│
+│        Virtual RAM
+│
+│
+├─────────────────────────────
+│
+0xFFFFFFFF
+```
+
+Every byte has a unique address.
+
+Instructions reference memory through addresses rather than physical host pointers.
+
+---
+
+# 5. Virtual Memory Philosophy
+
+TinyVM intentionally separates
+
+Host Memory
+
+from
+
+Virtual Memory.
+
+Applications should believe they are executing on an independent computer.
+
+The host operating system merely stores the bytes.
+
+This abstraction allows the implementation to change without affecting software executing inside TinyVM.
+
+---
+
+# 6. Planned Memory Layout
+
+Although still evolving, the planned address space is expected to resemble the following.
+
+```text
+High Addresses
+
+┌────────────────────────────┐
+│ Reserved                   │
+├────────────────────────────┤
+│ Kernel Space               │
+├────────────────────────────┤
+│ Heap                       │
+├────────────────────────────┤
+│ Stack                      │
+├────────────────────────────┤
+│ Program Data               │
+├────────────────────────────┤
+│ Executable Code            │
+└────────────────────────────┘
+
+Low Addresses
+```
+
+Each region serves a unique purpose.
+
+---
+
+## Executable Code
+
+Contains machine instructions loaded from a TVX executable.
+
+Normally read-only.
+
+---
+
+## Program Data
+
+Stores global variables and static objects.
+
+---
+
+## Stack
+
+Automatically grows and shrinks during program execution.
+
+Stores
+
+* local variables
+* return addresses
+* function parameters
+* temporary values
+
+The Stack Pointer register (`sp`) references the current top of the stack.
+
+---
+
+## Heap
+
+Dynamic memory allocated while the program is executing.
+
+Future allocation functions will eventually resemble
+
+```cpp
+malloc()
+
+free()
+```
+
+implemented entirely by TinyKernal.
+
+---
+
+## Kernel Space
+
+Reserved exclusively for TinyKernal.
+
+Applications should never directly access this region.
+
+---
+
+# 7. Memory Ownership
+
+Every allocation should eventually belong to exactly one process.
+
+```text
+Process A
+
+Heap
+Stack
+
+↓
+
+Memory Manager
+
+↓
+
+Allocated Blocks
+```
+
+This design simplifies future process isolation and debugging.
+
+---
+
+# 8. Planned Memory API
+
+The Memory Manager is expected to expose operations similar to
+
+```cpp
+Allocate()
+
+Free()
+
+Read()
+
+Write()
+
+Resize()
+
+Clear()
+```
+
+Higher-level components should interact only through these interfaces.
+
+---
+
+# 9. Memory Access
+
+TVM_64 instructions such as
+
+```asm
+mov
+
+load
+
+store
+```
+
+will eventually communicate with memory through the Memory Manager.
+
+Example execution.
+
+```text
+MOV r1, [100]
+
+↓
+
+CPU requests address 100
+
+↓
+
+Memory Manager validates request
+
+↓
+
+Value returned
+
+↓
+
+Register updated
+```
+
+Likewise,
+
+```text
+STORE r1, [200]
+
+↓
+
+Memory Manager
+
+↓
+
+Address 200 updated
+```
+
+---
+
+# 10. Relationship With Registers
+
+Registers are not part of memory.
+
+Registers belong to the CPU.
+
+Memory belongs to TinyKernal.
+
+```text
+CPU
+
+Registers
+r0
+r1
+r2
+...
+
+↓
+
+Memory Manager
+
+↓
+
+Virtual RAM
+```
+
+The CPU temporarily stores values in registers before transferring them into memory.
+
+---
+
+# 11. Future Heap Manager
+
+Future versions will introduce dynamic allocation.
+
+Expected responsibilities include
+
+• allocating blocks
+
+• releasing blocks
+
+• fragmentation management
+
+• block metadata
+
+A simple free-list allocator is currently considered the preferred initial implementation.
+
+---
+
+# 12. Future Stack Manager
+
+The Stack Manager will operate independently from the Heap.
+
+Responsibilities include
+
+• PUSH
+
+• POP
+
+• CALL
+
+• RET
+
+• local variable storage
+
+TVM_64 instructions should manipulate only the Stack Pointer.
+
+The Memory Manager will perform the actual memory operations.
+
+---
+
+# 13. Memory Protection
+
+Current versions intentionally omit protection.
+
+Future versions may introduce
+
+• read-only pages
+
+• executable pages
+
+• kernel-only memory
+
+• process isolation
+
+These features remain outside the scope of the initial implementation.
+
+---
+
+# 14. Interaction With Other Subsystems
+
+The Memory Manager communicates with nearly every subsystem.
+
+```text
+             TinyShell
+                  │
+                  ▼
+            TinyKernal
+                  │
+      ┌───────────┼───────────┐
+      │           │           │
+  Processes   Filesystem   TVM_64
+                  │
+                  ▼
+           Memory Manager
+```
+
+Every executable ultimately depends upon this subsystem.
+
+---
+
+# 15. Future Improvements
+
+Planned enhancements include
+
+✓ Virtual RAM
+
+✓ Dynamic allocation
+
+✓ Stack allocation
+
+✓ Executable loading
+
+✓ Heap allocator
+
+✓ Memory statistics
+
+✓ Debug allocator
+
+✓ Page abstraction
+
+✓ Memory permissions
+
+✓ Copy-on-write experiments
+
+These features will gradually transform the subsystem from a simple educational allocator into a more capable virtual memory manager.
+
+---
+
+# 16. Design Philosophy
+
+The Memory Manager intentionally hides implementation details from the rest of TinyVM.
+
+TVM_64 should request memory.
+
+TinyKernal should manage memory.
+
+Applications should simply use memory.
+
+No subsystem outside the Memory Manager should concern itself with how allocation or storage is implemented internally.
+
+This separation improves modularity and makes future redesigns significantly easier.
+
+---
+
+# Chapter Summary
+
+The Memory Manager forms the foundation of TinyVM's execution environment.
+
+Although intentionally lightweight in its current form, it establishes the abstractions required for future executable loading, dynamic allocation, stack management and process isolation.
+
+By separating CPU registers from virtual memory and exposing a clean allocation interface, TinyVM prepares for the introduction of the TVM_64 processor and the execution of native TVX applications.
+
+The next chapter examines the **Process Manager**, which defines how TinyVM represents, creates and manages executing programs.
+
+
+# TinyVM Developer Manual
+
+## Volume II — TinyKernal
+
+### Chapter 3 — Process Management
+
+**Version:** Pre-Alpha (June 2026)
+
+---
+
+# 1. Introduction
+
+The Process Manager is responsible for representing and managing every executing program inside TinyVM.
+
+Although the current implementation is intentionally lightweight, the Process Manager establishes the abstraction that separates a *program* (a file on disk) from a *process* (a running instance of that program).
+
+In future versions of TinyVM, every `.tvx` executable will execute as an independent process managed by TinyKernal.
+
+---
+
+# 2. What Is a Process?
+
+Within TinyVM, a **process** represents an executing program together with all of the resources required for execution.
+
+A process is more than just machine code.
+
+It also owns:
+
+* memory
+* registers
+* stack
+* heap
+* execution state
+* open files (planned)
+* process identifier
+
+Conceptually,
+
+```text
+program.tvx
+
+↓
+
+Loaded into memory
+
+↓
+
+Registers initialized
+
+↓
+
+Stack created
+
+↓
+
+Process begins execution
+```
+
+---
+
+# 3. Responsibilities
+
+The Process Manager is responsible for:
+
+* Creating processes
+* Destroying processes
+* Maintaining process information
+* Tracking execution state
+* Assigning Process IDs (PIDs)
+* Managing process resources
+* Preparing programs for execution
+
+Future versions will additionally support:
+
+* multitasking
+* scheduling
+* process priorities
+* inter-process communication
+* background processes
+
+---
+
+# 4. Position Inside TinyVM
+
+```text
+        TinyShell
+             │
+             ▼
+      Process Manager
+             │
+      ┌──────┴──────┐
+      │             │
+  Memory        TVM_64
+      │             │
+      └──────┬──────┘
+             ▼
+        Running Process
+```
+
+TinyShell requests that a program be executed.
+
+The Process Manager prepares the execution environment.
+
+TVM_64 executes the instructions.
+
+---
+
+# 5. Program vs Process
+
+This distinction is fundamental.
+
+A program is passive.
+
+A process is active.
+
+```text
+Program
+
+calculator.tvx
+
+↓
+
+Loaded
+
+↓
+
+Process
+
+PID = 12
+Running
+Registers
+Memory
+Stack
+```
+
+Multiple processes may eventually execute the same program simultaneously.
+
+---
+
+# 6. Planned Process Life Cycle
+
+Every process is expected to move through several states.
+
+```text
+          Created
+              │
+              ▼
+           Loaded
+              │
+              ▼
+           Running
+              │
+      ┌───────┴────────┐
+      │                │
+      ▼                ▼
+ Waiting          Terminated
+```
+
+Each transition is controlled by TinyKernal.
+
+---
+
+# 7. Process Creation
+
+Creating a process consists of several independent stages.
+
+```text
+Receive executable
+
+↓
+
+Create Process Object
+
+↓
+
+Allocate Memory
+
+↓
+
+Initialize Registers
+
+↓
+
+Create Stack
+
+↓
+
+Load Program
+
+↓
+
+Ready to Execute
+```
+
+Once complete, the process can be handed to TVM_64.
+
+---
+
+# 8. Process Descriptor
+
+Internally, every process will eventually be represented by a Process Control Block (PCB).
+
+Conceptually,
+
+```cpp
+struct Process
+{
+    PID
+
+    State
+
+    Registers
+
+    Instruction Pointer
+
+    Stack Pointer
+
+    Memory
+
+    Executable
+
+    Exit Code
+};
+```
+
+This structure stores everything TinyKernal needs to manage a process.
+
+---
+
+# 9. Process Identifier (PID)
+
+Every running process should eventually receive a unique identifier.
+
+Example
+
+```text
+PID 1
+
+TinyShell
+
+PID 2
+
+hello.tvx
+
+PID 3
+
+calculator.tvx
+```
+
+The PID allows TinyKernal to distinguish between multiple executing programs.
+
+---
+
+# 10. Process States
+
+TinyVM plans to support several execution states.
+
+### Created
+
+The process object exists but execution has not begun.
+
+---
+
+### Loaded
+
+Memory has been allocated.
+
+The executable has been loaded.
+
+Registers have been initialized.
+
+---
+
+### Running
+
+TVM_64 is currently executing instructions.
+
+---
+
+### Waiting
+
+Execution is temporarily paused while waiting for an external event.
+
+Examples include:
+
+* file access
+* user input
+* future IPC
+
+---
+
+### Terminated
+
+Execution has completed.
+
+Resources can now be released.
+
+---
+
+# 11. Process Resources
+
+Each process owns several resources.
+
+```text
+Process
+
+├── Registers
+├── Stack
+├── Heap
+├── Code
+├── Data
+└── Exit Code
+```
+
+The ownership model prevents unrelated processes from accidentally interfering with each other.
+
+---
+
+# 12. Relationship With Memory
+
+Every process owns its own virtual memory.
+
+```text
+Process A
+
+Stack
+
+Heap
+
+Registers
+
+↓
+
+Memory Manager
+
+↓
+
+Virtual RAM
+```
+
+Future versions may allow multiple processes to execute simultaneously while maintaining isolated memory spaces.
+
+---
+
+# 13. Relationship With TVM_64
+
+TVM_64 is responsible for executing instructions.
+
+TinyKernal is responsible for deciding *which* process is being executed.
+
+The CPU never creates processes.
+
+It merely executes the currently active one.
+
+```text
+TinyShell
+
+↓
+
+Process Manager
+
+↓
+
+TVM_64
+
+↓
+
+Instruction Execution
+```
+
+---
+
+# 14. Relationship With TinyShell
+
+TinyShell is expected to become the primary process launcher.
+
+Example
+
+```text
+tinyedit notes.txt
+
+↓
+
+TinyShell
+
+↓
+
+Create Process
+
+↓
+
+Load tinyedit.tvx
+
+↓
+
+Execute
+```
+
+The shell itself does not execute instructions.
+
+It merely requests that TinyKernal launch a process.
+
+---
+
+# 15. Process Termination
+
+Execution may end for several reasons.
+
+* Program exits normally
+* Exit syscall
+* Fatal runtime error
+* Future kernel termination
+
+Once execution ends,
+
+```text
+Release Stack
+
+↓
+
+Release Heap
+
+↓
+
+Close Resources
+
+↓
+
+Destroy Process Object
+```
+
+---
+
+# 16. Future Scheduler
+
+The current implementation executes one process at a time.
+
+Future versions will introduce a scheduler.
+
+Conceptually,
+
+```text
+Ready Queue
+
+↓
+
+Scheduler
+
+↓
+
+TVM_64
+
+↓
+
+Timer
+
+↓
+
+Next Process
+```
+
+Initially a simple round-robin scheduler is expected.
+
+---
+
+# 17. Planned Features
+
+Future development may include:
+
+✓ multitasking
+
+✓ priorities
+
+✓ sleeping processes
+
+✓ process suspension
+
+✓ process resumption
+
+✓ parent-child processes
+
+✓ process signals
+
+✓ IPC
+
+✓ process statistics
+
+---
+
+# 18. Design Philosophy
+
+TinyVM intentionally separates the concept of a process from the CPU.
+
+The CPU executes instructions.
+
+The Process Manager owns execution.
+
+This separation mirrors the architecture of real operating systems while remaining considerably simpler.
+
+By treating every running program as an independent process, TinyVM prepares for future multitasking without requiring a redesign of the CPU.
+
+---
+
+# Chapter Summary
+
+The Process Manager introduces the execution abstraction required for TinyVM to evolve from a collection of tools into a true operating environment.
+
+Although currently lightweight, it establishes the structures necessary for process creation, execution, isolation and eventual multitasking.
+
+Together with the Memory Manager, it provides the execution environment in which TVM_64 programs will run.
+
+The next chapter examines the **Virtual Filesystem**, which provides TinyVM with its own abstraction for files, directories and storage independent of the host operating system.
+
+
+# TinyVM Developer Manual
+
+## Volume II — TinyKernal
+
+### Chapter 4 — Virtual Filesystem (VFS)
+
+**Version:** Pre-Alpha (June 2026)
+
+---
+
+# 1. Introduction
+
+The Virtual Filesystem (VFS) is TinyVM's abstraction layer for persistent storage.
+
+Rather than exposing the host operating system's filesystem directly, TinyVM presents applications with its own consistent filesystem interface.
+
+To every program executing inside TinyVM, the Virtual Filesystem behaves as though it were the native filesystem of an independent operating system.
+
+This abstraction is one of the key architectural principles of TinyVM.
+
+Applications should interact with **TinyKernal**, not with Windows.
+
+---
+
+# 2. Objectives
+
+The Virtual Filesystem has several primary goals.
+
+* Hide host operating system details.
+* Provide a stable filesystem API.
+* Support future virtual disks.
+* Allow executable loading.
+* Enable platform independence.
+* Maintain compatibility across host operating systems.
+
+A TVM application should never need to know whether TinyVM is running on Windows, Linux or another platform.
+
+---
+
+# 3. Architectural Position
+
+```text
+                TinyShell
+                    │
+                    ▼
+          Virtual Filesystem
+                    │
+          TinyKernal Filesystem
+                    │
+                    ▼
+          Host Filesystem API
+                    │
+                    ▼
+                Physical Disk
+```
+
+The Virtual Filesystem therefore serves as the translation layer between TinyVM software and the host operating system.
+
+---
+
+# 4. Filesystem Philosophy
+
+TinyVM intentionally separates two concepts.
+
+**Host Filesystem**
+
+The actual storage provided by the operating system.
+
+Examples:
+
+* NTFS
+* ext4
+* APFS
+
+---
+
+**Virtual Filesystem**
+
+The filesystem visible to TinyVM applications.
+
+Applications should believe they are operating entirely within TinyVM.
+
+This abstraction allows the implementation to evolve without requiring changes to application software.
+
+---
+
+# 5. Directory Structure
+
+Conceptually, TinyVM exposes a hierarchical filesystem.
+
+```text
+/
+
+├── bin
+│
+├── home
+│   └── user
+│
+├── system
+│
+├── tmp
+│
+├── usr
+│
+└── var
+```
+
+Although not all directories currently exist, the hierarchy provides a roadmap for future development.
+
+---
+
+# 6. Paths
+
+TinyVM uses absolute and relative paths similarly to modern operating systems.
+
+Examples:
+
+```text
+/home/user
+
+/bin
+
+/system
+```
+
+Relative paths are interpreted using the current working directory maintained by TinyShell.
+
+---
+
+# 7. Current Responsibilities
+
+The Virtual Filesystem currently provides or plans to provide the following operations.
+
+* create file
+* remove file
+* create directory
+* remove directory
+* rename
+* read
+* write
+* append
+* exists
+* list directory
+* current working directory
+
+These operations form the basis of every filesystem-related syscall.
+
+---
+
+# 8. Relationship With TinyShell
+
+TinyShell acts as the primary client of the Virtual Filesystem.
+
+Commands such as
+
+```text
+ls
+
+cd
+
+mkdir
+
+touch
+
+rm
+
+cat
+```
+
+do not manipulate Windows directly.
+
+Instead,
+
+```text
+TinyShell
+
+↓
+
+Filesystem API
+
+↓
+
+TinyKernal
+
+↓
+
+Host Filesystem
+```
+
+This separation allows TinyShell to remain portable.
+
+---
+
+# 9. File Representation
+
+Conceptually, every file consists of two components.
+
+```text
+File
+
+├── Metadata
+│
+└── Contents
+```
+
+Metadata may eventually include
+
+* filename
+* extension
+* size
+* creation time
+* modification time
+* permissions
+* owner
+
+---
+
+# 10. Directory Representation
+
+Directories are containers.
+
+```text
+Directory
+
+├── Files
+
+├── Subdirectories
+
+└── Metadata
+```
+
+Future versions may support directory attributes and permissions.
+
+---
+
+# 11. Current Working Directory
+
+Every shell session maintains a Current Working Directory (CWD).
+
+Example:
+
+```text
+/home/user/projects
+```
+
+Relative paths are resolved using the CWD.
+
+Example:
+
+```text
+notes.txt
+```
+
+becomes
+
+```text
+/home/user/projects/notes.txt
+```
+
+---
+
+# 12. File Operations
+
+Typical execution flow.
+
+```text
+TinyShell
+
+↓
+
+touch hello.txt
+
+↓
+
+Filesystem API
+
+↓
+
+Host Filesystem
+
+↓
+
+File Created
+```
+
+Likewise,
+
+```text
+cat hello.txt
+
+↓
+
+Filesystem
+
+↓
+
+Read File
+
+↓
+
+Return Contents
+```
+
+---
+
+# 13. Future Executable Loading
+
+Eventually, executables will also be loaded through the Virtual Filesystem.
+
+```text
+hello.tvx
+
+↓
+
+Filesystem
+
+↓
+
+Executable Loader
+
+↓
+
+Memory Manager
+
+↓
+
+TVM_64
+```
+
+The CPU should never read files directly.
+
+---
+
+# 14. Planned Permissions
+
+TinyVM currently omits permissions.
+
+Future versions may support
+
+* read
+* write
+* execute
+
+Conceptually,
+
+```text
+rwx
+```
+
+or an equivalent TinyVM-specific permission model.
+
+---
+
+# 15. Mount Points (Planned)
+
+Future versions may allow multiple storage devices.
+
+Example:
+
+```text
+/
+
+├── disk0
+
+├── disk1
+
+└── cdrom
+```
+
+Initially all storage will continue to map to the host filesystem.
+
+---
+
+# 16. Virtual Disks
+
+A future milestone is replacing direct host directory access with a dedicated TinyVM virtual disk image.
+
+Example:
+
+```text
+tinyvm.vhd
+
+↓
+
+Virtual Filesystem
+
+↓
+
+Files
+
+↓
+
+Applications
+```
+
+At this stage, TinyVM applications would no longer interact directly with host directories.
+
+---
+
+# 17. Interaction With Other Subsystems
+
+The Virtual Filesystem communicates with nearly every subsystem.
+
+```text
+             TinyShell
+                 │
+                 ▼
+          Virtual Filesystem
+        ┌────────┼────────┐
+        │        │        │
+    Syscalls  Memory  Process Manager
+                 │
+                 ▼
+             TinyKernal
+```
+
+Every executable, text editor and assembler will eventually rely on this subsystem.
+
+---
+
+# 18. Planned API
+
+The filesystem interface is expected to provide operations conceptually similar to:
+
+```cpp
+CreateFile()
+
+DeleteFile()
+
+CreateDirectory()
+
+DeleteDirectory()
+
+ReadFile()
+
+WriteFile()
+
+AppendFile()
+
+Rename()
+
+Exists()
+
+ListDirectory()
+```
+
+Higher-level software should communicate only through this interface.
+
+---
+
+# 19. Design Philosophy
+
+The Virtual Filesystem exists so that TinyVM owns the concept of a file.
+
+Windows merely stores bytes.
+
+TinyVM defines
+
+* directory hierarchy
+* file semantics
+* executable discovery
+* path resolution
+* future permissions
+
+This separation allows the TinyVM ecosystem to evolve independently of the host operating system.
+
+---
+
+# 20. Future Development
+
+Planned improvements include:
+
+✓ Executable loading
+
+✓ Virtual disk images
+
+✓ Filesystem caching
+
+✓ File permissions
+
+✓ Symbolic links
+
+✓ Mount points
+
+✓ Journaling experiments
+
+✓ Multiple filesystem backends
+
+✓ Native TVX storage
+
+As TinyVM matures, the Virtual Filesystem will transition from a host wrapper into a fully independent storage subsystem.
+
+---
+
+# Chapter Summary
+
+The Virtual Filesystem provides TinyVM with a unified, platform-independent view of storage.
+
+By abstracting the host operating system's filesystem behind TinyKernal, applications interact with a consistent API regardless of the underlying platform.
+
+This design allows TinyVM to grow from a collection of tools into a self-contained operating environment capable of supporting native executables, virtual disks and future storage technologies.
+
+The next chapter explores the **System Call Dispatcher**, the interface through which every TinyVM application requests operating system services.
+
+
+# TinyVM Developer Manual
+
+## Volume II — TinyKernal
+
+### Chapter 5 — System Call Dispatcher
+
+**Version:** Pre-Alpha (June 2026)
+
+---
+
+# 1. Introduction
+
+The System Call Dispatcher (Syscall Dispatcher) is the primary communication interface between applications executing inside TinyVM and the services provided by TinyKernal.
+
+Rather than allowing applications to directly manipulate the filesystem, memory, console or host operating system, all privileged operations are requested through **system calls**.
+
+The dispatcher receives a syscall request from TVM_64, validates it, and forwards it to the appropriate kernel subsystem.
+
+This architecture separates user programs from operating system implementation details and provides a stable Application Binary Interface (ABI) for all TinyVM software.
+
+---
+
+# 2. What Is a System Call?
+
+A **system call** is a controlled request made by an application to the operating system.
+
+Applications are intentionally restricted from directly accessing privileged kernel functionality.
+
+Instead, they request services such as:
+
+* printing text
+* reading files
+* writing files
+* allocating memory
+* terminating a process
+
+through a syscall.
+
+Conceptually:
+
+```text
+Application
+
+↓
+
+syscall
+
+↓
+
+TinyKernal
+
+↓
+
+Requested Service
+```
+
+---
+
+# 3. Why System Calls Exist
+
+Without a syscall interface, every application would need direct access to:
+
+* Windows APIs
+* filesystem internals
+* memory manager
+* process manager
+
+This would tightly couple software to the host operating system.
+
+TinyVM instead exposes a single, stable interface.
+
+Applications only know TinyKernal.
+
+TinyKernal knows the host operating system.
+
+---
+
+# 4. Position Within TinyVM
+
+```text
+          TVM Program
+               │
+               ▼
+            TVM_64
+               │
+        syscall instruction
+               │
+               ▼
+       Syscall Dispatcher
+               │
+    ┌──────────┼──────────┐
+    │          │          │
+Filesystem  Memory   Processes
+               │
+               ▼
+        Host Operating System
+```
+
+The dispatcher therefore acts as the gateway between the CPU and every operating system service.
+
+---
+
+# 5. Execution Flow
+
+The lifecycle of a syscall is expected to follow this sequence.
+
+```text
+Application
+
+↓
+
+TVM_64 executes syscall instruction
+
+↓
+
+Syscall Number read
+
+↓
+
+Dispatcher validates request
+
+↓
+
+Correct subsystem selected
+
+↓
+
+Operation performed
+
+↓
+
+Return value placed in register
+
+↓
+
+Execution resumes
+```
+
+This sequence ensures that applications remain isolated from kernel implementation details.
+
+---
+
+# 6. Calling Convention
+
+TinyVM defines its own syscall calling convention.
+
+The current design reserves general-purpose registers for argument passing.
+
+A typical convention is expected to resemble:
+
+```text
+r0  → Syscall Number
+
+r1  → Argument 1
+
+r2  → Argument 2
+
+r3  → Argument 3
+
+r4  → Argument 4
+
+r5  → Return Value
+```
+
+The exact register assignment may evolve alongside TVM_64, but the principle remains unchanged: registers are used to transfer information between the CPU and TinyKernal.
+
+---
+
+# 7. Dispatcher Responsibilities
+
+The dispatcher performs several critical tasks.
+
+### Validate the syscall number.
+
+Unknown syscalls should return an appropriate error rather than invoking undefined behavior.
+
+---
+
+### Decode arguments.
+
+Arguments are extracted from registers according to the TinyVM syscall ABI.
+
+---
+
+### Forward execution.
+
+The dispatcher routes the request to the responsible subsystem.
+
+Examples include:
+
+* Filesystem
+* Memory Manager
+* Process Manager
+* Console
+
+---
+
+### Return results.
+
+Upon completion, return values are written back into CPU registers before execution continues.
+
+---
+
+# 8. Planned System Call Categories
+
+For maintainability, TinyVM groups syscalls by subsystem.
+
+## Console
+
+Examples:
+
+* print
+* println
+* clear screen
+* set cursor position
+
+---
+
+## Filesystem
+
+Examples:
+
+* open
+* close
+* read
+* write
+* create
+* delete
+* exists
+
+---
+
+## Memory
+
+Examples:
+
+* allocate
+* free
+* resize
+
+---
+
+## Process
+
+Examples:
+
+* exit
+* get PID
+* spawn process
+* terminate process
+
+---
+
+## System
+
+Examples:
+
+* version
+* hostname
+* current time
+* system information
+
+---
+
+# 9. Example Execution
+
+Consider the following TVM assembly:
+
+```asm
+mov r0, SYS_PRINT
+mov r1, message
+syscall
+```
+
+Execution proceeds as follows:
+
+```text
+TVM_64
+
+↓
+
+Read r0
+
+↓
+
+Dispatcher
+
+↓
+
+Recognize SYS_PRINT
+
+↓
+
+Console Subsystem
+
+↓
+
+Print Message
+
+↓
+
+Return Success
+
+↓
+
+Continue Execution
+```
+
+---
+
+# 10. Error Handling
+
+The dispatcher should detect invalid requests before forwarding them.
+
+Possible error conditions include:
+
+* unknown syscall number
+* invalid memory address
+* invalid file handle
+* insufficient arguments
+* unsupported operation
+
+Rather than crashing the virtual machine, the dispatcher should return an error code to the calling process whenever possible.
+
+---
+
+# 11. Security
+
+The dispatcher acts as the primary security boundary between user applications and TinyKernal.
+
+Applications never invoke kernel functions directly.
+
+Every privileged operation passes through a single validation point.
+
+Future versions may introduce:
+
+* privilege levels
+* capability checks
+* permission validation
+* sandboxing
+
+---
+
+# 12. Relationship With TVM_64
+
+TVM_64 is responsible for executing the `syscall` instruction.
+
+TinyKernal is responsible for interpreting the syscall number.
+
+The CPU itself has no knowledge of files, processes or directories.
+
+It merely transfers execution to the dispatcher.
+
+---
+
+# 13. Relationship With TinyShell
+
+TinyShell also relies on TinyKernal services.
+
+Commands such as:
+
+```text
+touch
+
+mkdir
+
+cat
+
+rm
+```
+
+ultimately invoke filesystem operations provided by TinyKernal.
+
+As TinyVM evolves, both TinyShell and TVM_64 applications will share the same syscall interface.
+
+---
+
+# 14. Planned Syscall Table
+
+The following categories are currently planned.
+
+```text
+0x00    Exit
+
+0x01    Print
+
+0x02    Print Line
+
+0x03    Read Line
+
+0x10    Open File
+
+0x11    Close File
+
+0x12    Read File
+
+0x13    Write File
+
+0x20    Allocate Memory
+
+0x21    Free Memory
+
+0x30    Get PID
+
+0x31    Spawn Process
+
+0x40    Get Version
+
+0x41    Get Hostname
+```
+
+Additional syscalls will be introduced as TinyVM expands.
+
+---
+
+# 15. Extensibility
+
+The dispatcher is designed so that new syscalls can be added without modifying existing applications.
+
+Applications interact only with the published syscall numbers and calling convention.
+
+The underlying implementation may evolve independently.
+
+---
+
+# 16. Design Philosophy
+
+The syscall dispatcher intentionally centralizes all privileged operations.
+
+This provides several advantages.
+
+* Platform independence.
+* Easier debugging.
+* Stable ABI.
+* Simplified CPU implementation.
+* Clean separation between user code and kernel code.
+
+Rather than exposing implementation details, TinyVM exposes services.
+
+---
+
+# 17. Future Development
+
+Planned enhancements include:
+
+✓ Complete syscall table
+
+✓ File handles
+
+✓ Memory handles
+
+✓ Process handles
+
+✓ Structured error codes
+
+✓ Networking syscalls
+
+✓ Time and clock services
+
+✓ Random number generation
+
+✓ Device abstraction
+
+✓ Debugging services
+
+---
+
+# Chapter Summary
+
+The System Call Dispatcher is the central communication mechanism between TVM_64 applications and TinyKernal.
+
+By routing every privileged request through a single interface, TinyVM achieves a clean separation between user software and operating system services.
+
+This architecture simplifies CPU design, improves modularity, and establishes the Application Binary Interface upon which every future TinyVM application will depend.
+
+The next chapter examines the **Host Operating System Abstraction Layer**, which maps TinyVM services onto the APIs of the underlying operating system while preserving platform independence.
+
+

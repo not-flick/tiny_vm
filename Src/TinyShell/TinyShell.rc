@@ -1,1 +1,3 @@
-IDI_TINYSHELL ICON "logo/TinyShell.ico"
+#include "resource.h"
+
+IDI_APP_ICON ICON "logo/TinyShell.ico"

@@ -1,0 +1,484 @@
+# TinyVM Developer Manual
+
+## Volume I — Project Overview & Architecture
+
+**Version:** Pre-Alpha (June 2026)
+
+**Project:** TinyVM
+
+**Author:** Viraj (not-flick)
+
+---
+
+# Preface
+
+TinyVM is an educational systems programming project whose purpose is to build an entire virtual computing platform from the ground up.
+
+Unlike traditional virtual machines that emulate existing processors such as x86 or ARM, TinyVM introduces an entirely original architecture called **TVM_64** together with its own operating environment, executable format, assembler and development tools.
+
+The long-term objective is not merely to execute programs, but to understand every abstraction that exists inside a modern computer by implementing each layer manually.
+
+Instead of depending on an existing CPU architecture, operating system API or executable specification, TinyVM gradually replaces each of those pieces with its own implementation.
+
+The project serves simultaneously as:
+
+* a virtual machine
+* an educational operating system
+* a CPU emulator
+* an assembler toolchain
+* a systems programming laboratory
+
+---
+
+# Philosophy
+
+TinyVM is built upon one simple principle.
+
+> If the computer can do it, TinyVM should eventually be capable of implementing it itself.
+
+The project deliberately avoids unnecessary dependencies and attempts to expose every layer of execution.
+
+Instead of hiding complexity, TinyVM embraces it.
+
+Every abstraction should be understandable.
+
+Every subsystem should have a clear purpose.
+
+Every feature should teach something about computer architecture.
+
+---
+
+# Long-Term Vision
+
+The completed platform will consist of:
+
+```
+          TinyVM Platform
+
+       TVX Executable Programs
+                 │
+                 ▼
+              TVM_64
+        Virtual CPU Architecture
+                 │
+                 ▼
+            TinyKernal
+      Operating System Services
+                 │
+                 ▼
+            TinyShell
+        User Environment
+                 │
+                 ▼
+         Host Operating System
+```
+
+Eventually every executable executed inside TinyVM will communicate exclusively with TinyKernal through system calls.
+
+The host operating system will merely provide hardware access.
+
+---
+
+# Core Components
+
+TinyVM currently consists of several major subsystems.
+
+## TinyKernal
+
+TinyKernal forms the operating system layer of TinyVM.
+
+Responsibilities include
+
+* virtual memory management
+* process abstraction
+* filesystem interface
+* system call dispatcher
+* console services
+* abstraction over host operating system APIs
+
+TinyKernal intentionally isolates every application from Windows.
+
+Applications should never call Windows directly.
+
+---
+
+## TinyShell
+
+TinyShell provides the primary user interface.
+
+Responsibilities include
+
+* command parsing
+* command execution
+* filesystem navigation
+* aliases
+* history
+* shell variables
+* launching applications
+
+TinyShell communicates with TinyKernal rather than directly with the host operating system.
+
+---
+
+## TVM_64
+
+TVM_64 is the custom processor architecture.
+
+It is responsible for
+
+* register execution
+* instruction decoding
+* instruction execution
+* program flow
+* stack operations
+* arithmetic
+* system call invocation
+
+Unlike x86, TVM_64 is designed specifically for learning.
+
+Historical compatibility is intentionally sacrificed in favour of readability.
+
+---
+
+## TinyEdit
+
+TinyEdit will become the native text editor for TinyVM.
+
+Its long-term purpose is to allow software development completely inside the virtual environment.
+
+---
+
+## FLASM
+
+FLASM is the assembler targeting TVM_64.
+
+Responsibilities include
+
+* lexical analysis
+* parsing
+* instruction encoding
+* executable generation
+
+Future versions may also include
+
+* labels
+* macros
+* include files
+* debugging symbols
+
+---
+
+## TVX
+
+TVX is the executable file format used by TinyVM.
+
+Every executable program inside TinyVM will eventually compile into the TVX format.
+
+---
+
+# Overall Architecture
+
+```
+                  Applications
+                        │
+        ┌───────────────┴───────────────┐
+        │                               │
+     TinyShell                     TinyEdit
+        │                               │
+        └───────────────┬───────────────┘
+                        │
+                  TinyKernal
+                        │
+        ┌───────────────┼───────────────┐
+        │               │               │
+   Filesystem       Memory        Process Manager
+                        │
+                        ▼
+                     TVM_64
+               Virtual CPU Core
+                        │
+                        ▼
+               Host Operating System
+                        │
+                        ▼
+                    Real Hardware
+```
+
+---
+
+# Design Principles
+
+## Simplicity
+
+Every subsystem should remain understandable.
+
+TinyVM is intended to teach systems programming rather than maximise benchmark performance.
+
+---
+
+## Layer Separation
+
+Each subsystem has exactly one responsibility.
+
+Examples:
+
+TinyShell
+
+* user interaction
+
+TinyKernal
+
+* operating system services
+
+TVM_64
+
+* CPU execution
+
+FLASM
+
+* translation
+
+TVX
+
+* executable representation
+
+---
+
+## Custom Architecture
+
+TinyVM intentionally avoids reproducing existing architectures.
+
+Instead, TVM_64 introduces
+
+* simplified registers
+* simplified instructions
+* simplified syscall interface
+
+The architecture exists solely for TinyVM.
+
+---
+
+## Educational Value
+
+Whenever multiple implementations exist, preference is given to the implementation that better demonstrates underlying computer science concepts.
+
+Performance is secondary.
+
+Understanding is primary.
+
+---
+
+# Current Project Status
+
+Current implementation includes
+
+✓ TinyKernal foundation
+
+✓ TinyShell
+
+✓ Virtual filesystem
+
+✓ Command parser
+
+✓ Boot sequence
+
+✓ Build system
+
+✓ Project structure
+
+Currently under active development
+
+• TVM_64 CPU
+
+• Register system
+
+• ISA
+
+• Decoder
+
+Planned
+
+• FLASM
+
+• TinyEdit
+
+• TVX executable loader
+
+• Process scheduler
+
+• Debugger
+
+---
+
+# Development Roadmap
+
+Phase 1
+
+Infrastructure
+
+* TinyKernal
+* TinyShell
+* Filesystem
+
+Status
+
+Completed
+
+---
+
+Phase 2
+
+CPU
+
+* Registers
+* Decoder
+* ISA
+* Execution loop
+
+Status
+
+In Progress
+
+---
+
+Phase 3
+
+Assembler
+
+* FLASM
+* Labels
+* Binary generation
+
+Status
+
+Planned
+
+---
+
+Phase 4
+
+Executable Format
+
+* TVX loader
+* Program execution
+
+Status
+
+Planned
+
+---
+
+Phase 5
+
+Development Environment
+
+* TinyEdit
+* Native toolchain
+* Self-hosted workflow
+
+Status
+
+Planned
+
+---
+
+# Directory Overview
+
+```
+Src/
+
+├── TinyKernal
+│   Operating system layer
+│
+├── TinyShell
+│   Interactive shell
+│
+├── TVM_64
+│   Virtual CPU
+│
+├── TinyEdit
+│   Native text editor
+│
+├── FLASM
+│   Assembler
+│
+└── TinyVM
+    Launcher
+```
+
+Each directory represents a major subsystem rather than a collection of unrelated files.
+
+---
+
+# What TinyVM Is
+
+TinyVM is
+
+* a systems programming project
+* a virtual computing platform
+* an educational CPU architecture
+* a custom operating environment
+* an assembler toolchain
+* a software development platform
+
+---
+
+# What TinyVM Is Not
+
+TinyVM is not
+
+* an x86 emulator
+* a Linux clone
+* a Windows compatibility layer
+* a game engine
+* a scripting language runtime
+
+Its purpose is to build an original computing platform from first principles.
+
+---
+
+# Future Goals
+
+The long-term objective is to reach a point where the following workflow is possible entirely inside TinyVM:
+
+```
+TinyShell
+
+↓
+
+TinyEdit
+
+↓
+
+FLASM
+
+↓
+
+program.tvx
+
+↓
+
+TVM_64
+
+↓
+
+TinyKernal
+
+↓
+
+Output
+```
+
+At that stage, software can be written, assembled, executed and debugged completely within the TinyVM ecosystem.
+
+---
+
+# Closing Notes
+
+TinyVM is intentionally developed incrementally.
+
+Rather than attempting to implement an entire operating system or processor at once, each subsystem is completed independently before integration.
+
+This approach keeps the architecture modular, easier to reason about, and suitable as a long-term educational systems programming project.
+
+Volume II covers the complete architecture of **TinyKernal**, including its memory manager, process manager, filesystem abstraction, and syscall interface.

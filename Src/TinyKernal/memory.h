@@ -1,6 +1,5 @@
 #pragma once
 
-#include <windows.h>
 #include <cstddef>
 #include <cstdint>
 
@@ -12,7 +11,7 @@ public:
 
     bool Protect(void* address,
                  std::size_t bytes,
-                 DWORD protection);
+                 uint32_t protection);
 
     bool Copy(void* destination,
               const void* source,

@@ -1,6 +1,7 @@
 #include <cstdint>
 
-enum class Opcode : uint8_t {
+enum class Register : uint8_t
+{
     r0,
     r1,
     r2,
